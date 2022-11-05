@@ -1,28 +1,17 @@
 Rails.application.routes.draw do
   get '/current_user', to: 'current_user#index'
   
-  devise_for :admins, path: 'admin', path_names: {
-      sign_in: 'login',
-      sign_out: 'logout',
-      sign_up: 'signup'
-    },
-    controllers: {
+  devise_for :admins, controllers: {
       sessions: 'admins/sessions',
       registrations: 'admins/registrations'
     }
 
 
-  devise_for :users, path: 'user', path_names: {
-    sign_in: 'login',
-    sign_out: 'logout',
-    sign_up: 'signup'
-  },
-  controllers: {
+  devise_for :users, only: [:sessions, :registrations],controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations'
   }
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
+  # devise_scope :user do 
+  #   post   'users/sign_up',  to: 'users/registrations#create'
+  # end
 end
