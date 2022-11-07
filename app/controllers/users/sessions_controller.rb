@@ -22,6 +22,7 @@ class Users::SessionsController < Devise::SessionsController
   private
 
   def respond_with(resource, _opts = {})
+    debugger
     render json: {
       status: {code: 200, message: 'Logged in sucessfully.'},
       data: UserSerializer.new(resource).serializable_hash[:data][:attributes]
@@ -29,6 +30,8 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def respond_to_on_destroy
+    # jwt_payload = JWT.decode(params[:Authorization].split('')[1], Rails.application.credentials.fetch(:secret_key_base)).first
+    # current user = User.find(jwt_payload['sub'])
     if current_user
       render json: {
         status: 200,

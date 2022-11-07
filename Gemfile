@@ -22,6 +22,7 @@ gem 'devise'
 gem 'devise-jwt'
 gem 'fast_jsonapi'
 gem 'byebug'
+gem 'carrierwave', '~> 2.2', '>= 2.2.2'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"

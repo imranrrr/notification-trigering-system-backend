@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :templates
   get '/current_user', to: 'current_user#index'
   
   devise_for :admins, controllers: {
