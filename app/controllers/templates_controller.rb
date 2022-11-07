@@ -11,9 +11,13 @@ class TemplatesController < ApplicationController
 
   # GET /templates/1
   def show
-    render json: {
-      template: TemplateSerializer.new(@template).serializable_hash[:data][:attributes]
-    }
+    # if @template
+      render json: {
+        template: TemplateSerializer.new(@template).serializable_hash[:data][:attributes]
+      }
+    # else
+      # render json: status: 404, `No Template with ID! Try some other ID.`
+    # end
   end
 
   # POST /templates
