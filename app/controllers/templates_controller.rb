@@ -3,21 +3,26 @@ class TemplatesController < ApplicationController
 
   # GET /templates
   def index
-    @templates = Template.all
-
-    render json: @templates
+    templates = Template.all.order("created_at DESC")
+    render json: {
+        templates: TemplateSerializer.new(templates).serializable_hash[:data].map{|data| data[:attributes]}
+      }
   end
 
   # GET /templates/1
   def show
-    render json: @template
+    render json: {
+      template: TemplateSerializer.new(@template).serializable_hash[:data][:attributes]
+    }
   end
 
   # POST /templates
   def create
     @template = Template.new(template_params)
     if @template.save!
-      render json: @template, status: :created, location: @template
+      render json: {
+        template: TemplateSerializer.new(@template).serializable_hash[:data][:attributes]
+      }
     else
       render json: @template.errors, status: :unprocessable_entity
     end
