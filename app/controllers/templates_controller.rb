@@ -1,5 +1,6 @@
 class TemplatesController < ApplicationController
   before_action :set_template, only: %i[ show update destroy ]
+  respond_to :json
 
   # GET /templates
   def index
@@ -11,13 +12,9 @@ class TemplatesController < ApplicationController
 
   # GET /templates/1
   def show
-    # if @template
       render json: {
         template: TemplateSerializer.new(@template).serializable_hash[:data][:attributes]
       }
-    # else
-      # render json: status: 404, `No Template with ID! Try some other ID.`
-    # end
   end
 
   # POST /templates
@@ -54,6 +51,6 @@ class TemplatesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def template_params
-      params.require(:template).permit(:name, :subject, :body, :audio, :color, :user_id)
+      params.require(:template).permit(:name, :subject, :body, :audio, :font_color, :user_id, :background_color )
     end
 end
