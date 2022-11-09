@@ -7,7 +7,7 @@ class CreateLocations < ActiveRecord::Migration[7.0]
 
       t.timestamps
     end
-    add_index :locations, :admin_id
     add_index :locations, :web_signage
+    add_index :locations, :admin_id
   end
 end

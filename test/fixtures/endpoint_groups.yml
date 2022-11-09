@@ -2,8 +2,12 @@
 
 one:
   name: MyString
+  description: MyString
   endpoint_type: 1
+  admin_id: 1
 
 two:
   name: MyString
+  description: MyString
   endpoint_type: 1
+  admin_id: 1

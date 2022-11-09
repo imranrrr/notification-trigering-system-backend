@@ -3,7 +3,9 @@
 one:
   name: MyString
   web_signage: MyString
+  admin_id: 1
 
 two:
   name: MyString
   web_signage: MyString
+  admin_id: 1
