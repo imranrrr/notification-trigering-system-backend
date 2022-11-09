@@ -1,7 +1,11 @@
 class CurrentUserController < ApplicationController
-  # before_action :authenticate_user!
+  before_action :authenticate_user!
   
   def index
-    render json: "this is #{current_user}", status: :ok
+    render json: current_user, status: :ok
+  end
+
+  def my_engine
+    render json: "this is testing"
   end
 end

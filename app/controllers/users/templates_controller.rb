@@ -1,4 +1,4 @@
-class TemplatesController < ApplicationController
+class Users::TemplatesController < ApplicationController
   before_action :set_template, only: %i[ show update destroy ]
   respond_to :json
 
