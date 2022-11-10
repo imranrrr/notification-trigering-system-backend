@@ -12,7 +12,9 @@ Rails.application.routes.draw do
     resources :templates
     resources :endpoint_groups
     resources :locations
-  end
+    resources :destinations
+    resources :endpoints
+    end
 
 
   devise_for :users, only: [:sessions, :registrations],controllers: {

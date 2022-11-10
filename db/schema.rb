@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_09_133205) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_10_101437) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -29,6 +29,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_09_133205) do
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
   end
 
+  create_table "destinations", force: :cascade do |t|
+    t.integer "destination_type", default: 0
+    t.string "resource_url"
+    t.integer "network_distribution_id"
+    t.integer "admin_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_id"], name: "index_destinations_on_admin_id"
+  end
+
   create_table "endpoint_groups", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -37,6 +47,21 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_09_133205) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["admin_id"], name: "index_endpoint_groups_on_admin_id"
+  end
+
+  create_table "endpoints", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.integer "location_id"
+    t.integer "endpoint_group_id"
+    t.integer "destination_id"
+    t.integer "admin_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_id"], name: "index_endpoints_on_admin_id"
+    t.index ["destination_id"], name: "index_endpoints_on_destination_id"
+    t.index ["endpoint_group_id"], name: "index_endpoints_on_endpoint_group_id"
+    t.index ["location_id"], name: "index_endpoints_on_location_id"
   end
 
   create_table "locations", force: :cascade do |t|
