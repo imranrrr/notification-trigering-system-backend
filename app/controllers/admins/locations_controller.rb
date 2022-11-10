@@ -58,6 +58,6 @@ class Admins::LocationsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def location_params
-      params.require(:location).permit(:name, :web_signage, :admin_id)
+      params.require(:location).permit(:name, :web_signage_id, :description, :admin_id)
     end
 end
