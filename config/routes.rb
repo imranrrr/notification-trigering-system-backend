@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :web_signages
 
   get '/current_user', to: 'current_user#index'
   get 'current_user/my_engine'

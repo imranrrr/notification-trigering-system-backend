@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_10_101437) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_10_130219) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -66,12 +66,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_10_101437) do
 
   create_table "locations", force: :cascade do |t|
     t.string "name"
-    t.string "web_signage"
     t.integer "admin_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "web_signage_id"
+    t.string "description"
     t.index ["admin_id"], name: "index_locations_on_admin_id"
-    t.index ["web_signage"], name: "index_locations_on_web_signage"
   end
 
   create_table "templates", force: :cascade do |t|
@@ -102,6 +102,29 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_10_101437) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "web_signages", force: :cascade do |t|
+    t.string "name"
+    t.integer "scroller_speed"
+    t.string "landscape_title_width"
+    t.string "landscape_title_height"
+    t.string "landscape_title_top"
+    t.string "landscape_title_left"
+    t.string "landscape_description_width"
+    t.string "landscape_description_height"
+    t.string "landscape_description_top"
+    t.string "landscape_description_left"
+    t.string "potrait_title_width"
+    t.string "potrait_title_height"
+    t.string "potrait_title_top"
+    t.string "potrait_title_left"
+    t.string "potrait_description_width"
+    t.string "potrait_description_height"
+    t.string "potrait_description_top"
+    t.string "potrait_description_left"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

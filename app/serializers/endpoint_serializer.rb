@@ -4,5 +4,9 @@ class EndpointSerializer
 
   attribute :created_at do |endpoint|
     endpoint.created_at && endpoint.created_at.strftime('%d/%m/%Y')
+  end
+
+  attribute :location do |endpoint|
+    {name: endpoint.location.name}
   end 
 end

@@ -1,0 +1,41 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  scroller_speed: 1
+  landscape_title_width: MyString
+  landscape_title_height: MyString
+  landscape_title_top: MyString
+  landscape_title_left: MyString
+  landscape_description_width: MyString
+  landscape_description_height: MyString
+  landscape_description_top: MyString
+  landscape_description_left: MyString
+  potrait_title_width: MyString
+  potrait_title_height: MyString
+  potrait_title_top: MyString
+  potrait_title_left: MyString
+  potrait_description_width: MyString
+  potrait_description_height: MyString
+  potrait_description_top: MyString
+  potrait_description_left: MyString
+
+two:
+  name: MyString
+  scroller_speed: 1
+  landscape_title_width: MyString
+  landscape_title_height: MyString
+  landscape_title_top: MyString
+  landscape_title_left: MyString
+  landscape_description_width: MyString
+  landscape_description_height: MyString
+  landscape_description_top: MyString
+  landscape_description_left: MyString
+  potrait_title_width: MyString
+  potrait_title_height: MyString
+  potrait_title_top: MyString
+  potrait_title_left: MyString
+  potrait_description_width: MyString
+  potrait_description_height: MyString
+  potrait_description_top: MyString
+  potrait_description_left: MyString
