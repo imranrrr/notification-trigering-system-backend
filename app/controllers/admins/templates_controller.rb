@@ -2,54 +2,73 @@ class Admins::TemplatesController < ApplicationController
   before_action :set_template, only: %i[ show update destroy ]
   respond_to :json
 
-  # GET /templates
   def index
-    templates = Template.all.order("created_at DESC")
-    render json: {
-        templates: TemplateSerializer.new(templates).serializable_hash[:data].map{|data| data[:attributes]}
-      }
+    begin
+      templates = Template.all.order("created_at DESC")
+      render json: {
+          templates: TemplateSerializer.new(templates).serializable_hash[:data].map{|data| data[:attributes]}
+        }
+    rescue => e
+      render json: e.message
+    end
   end
 
-  # GET /templates/1
   def show
+    begin
       render json: {
         template: TemplateSerializer.new(@template).serializable_hash[:data][:attributes]
       }
+    rescue => e
+      render json: e.message
+    end
   end
 
-  # POST /templates
   def create
     @template = Template.new(template_params)
-    if @template.save!
-      render json: {
-        template: TemplateSerializer.new(@template).serializable_hash[:data][:attributes]
-      }
-    else
-      render json: @template.errors, status: :unprocessable_entity
+    begin
+      if @template.save!
+        render json: {
+          template: TemplateSerializer.new(@template).serializable_hash[:data][:attributes]
+        }
+      end
+    rescue => e
+      render json: e.message
     end
   end
 
-  # PATCH/PUT /templates/1
   def update
-    if @template.update(template_params)
-      render json: @template
-    else
-      render json: @template.errors, status: :unprocessable_entity
+    begin
+    if @template.update!(template_params)
+       render json: {
+           template: TemplateSerializer.new(@template).serializable_hash[:data][:attributes]
+         }
+    end
+    rescue => e
+      render json: e.message
     end
   end
 
-  # DELETE /templates/1
   def destroy
-    @template.destroy
+    begin
+      render json: {
+        message: "you just destroyed! tmeplate.",
+        template: @template
+      }
+      @template.destroy
+    rescue => e
+      render json: e.message
+    end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_template
-      @template = Template.find(params[:id])
+      begin
+        @template = Template.find(params[:id])
+      rescue => e
+        render json: e.message
+      end
     end
 
-    # Only allow a list of trusted parameters through.
     def template_params
       params.require(:template).permit(:name, :subject, :body, :audio, :font_color, :user_id, :background_color, :admin_id )
     end

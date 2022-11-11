@@ -1,59 +1,74 @@
 class Admins::EndpointGroupsController < ApplicationController
   before_action :set_endpoint_group, only: %i[ show update destroy ]
 
-  # GET /endpoint_groups
   def index
-    endpoint_groups = EndpointGroup.all
-
-    render json:{
-      endpoint_groups: EndpointGroupSerializer.new(endpoint_groups).serializable_hash[:data].map{|data| data[:attributes]}
-    }
+    begin   
+      endpoint_groups = EndpointGroup.all
+      render json:{
+        endpoint_groups: EndpointGroupSerializer.new(endpoint_groups).serializable_hash[:data].map{|data| data[:attributes]}
+      }
+    rescue => e
+      render json: e.message
+    end
   end
 
-  # GET /endpoint_groups/1
   def show
-    render json: {
-      endpoint_group: EndpointGroupSerializer.new(@endpoint_group).serializable_hash[:data][:attributes]
-    }
+    begin
+      render json: {
+        endpoint_group: EndpointGroupSerializer.new(@endpoint_group).serializable_hash[:data][:attributes]
+      }
+    rescue => e
+      render json: e.message
+    end
   end
 
-  # POST /endpoint_groups
   def create
     endpoint_group = EndpointGroup.new(endpoint_group_params)
-
-    if endpoint_group.save
-      render json: {
-        endpoint_group: EndpointGroupSerializer.new(endpoint_group).serializable_hash[:data][:attributes]
-      }
-    else
-      render json: @endpoint_group.errors, status: :unprocessable_entity
+    begin
+      if endpoint_group.save!
+        render json: {
+          endpoint_group: EndpointGroupSerializer.new(endpoint_group).serializable_hash[:data][:attributes]
+        }
+      end
+    rescue => e
+      render json: e.message
     end
   end
 
   # PATCH/PUT /endpoint_groups/1
   def update
-    if @endpoint_group.update(endpoint_group_params)
-      render json: {
-        endpoint_group: EndpointGroupSerializer.new(@endpoint_group).serializable_hash[:data][:attributes]
-      }
-    else
-      render json: @endpoint_group.errors, status: :unprocessable_entity
+    begin
+      if @endpoint_group.update!(endpoint_group_params)
+        render json: {
+          endpoint_group: EndpointGroupSerializer.new(@endpoint_group).serializable_hash[:data][:attributes]
+          }
+      end
+    rescue => e
+      render json: e.message
     end
   end
 
   # DELETE /endpoint_groups/1
   def destroy
-    render json: {
-        status: "you just destroyed! Endppoint Group",
-        endppointGroup: @endpoint_group
-      }
-    @endpoint_group.destroy
+    begin
+      render json: {
+          status: "you just destroyed! Endppoint Group",
+          endppointGroup: @endpoint_group
+        }
+      @endpoint_group.destroy
+    rescue => e
+      render json: e.message
+    end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_endpoint_group
-      @endpoint_group = EndpointGroup.find(params[:id])
+      begin
+        @endpoint_group = EndpointGroup.find(params[:id])
+      rescue => e
+        render json: e.message
+      end
     end
 
     # Only allow a list of trusted parameters through.

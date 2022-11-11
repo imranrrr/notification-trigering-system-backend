@@ -1,42 +1,51 @@
 class Admins::EndpointsController < ApplicationController
   before_action :set_endpoint, only: %i[ show update destroy ]
 
-  # GET /endpoints
   def index
-    endpoints = Endpoint.all
-    render json: {
-      endpoints: EndpointSerializer.new(endpoints).serializable_hash[:data].map{|data| data[:attributes]}
-    }
+    begin
+      endpoints = Endpoint.all
+      render json: {
+        endpoints: EndpointSerializer.new(endpoints).serializable_hash[:data].map{|data| data[:attributes]}
+      }
+    rescue => e
+      render json: e.message
+    end
   end
 
-  # GET /endpoints/1
   def show
-    render json: {
-      endpoint: EndpointSerializer.new(@endpoint).serializable_hash[:data][:attributes]
-    }
+    begin
+      render json: {
+        endpoint: EndpointSerializer.new(@endpoint).serializable_hash[:data][:attributes]
+      }
+    rescue => e
+      render json: e.message
+    end
   end
 
   # POST /endpoints
   def create
     @endpoint = Endpoint.new(endpoint_params)
-
-    if @endpoint.save
-      render json: {
-        endpoint: EndpointSerializer.new(@endpoint).serializable_hash[:data][:attributes]
-      }
-    else
-      render json: @endpoint.errors, status: :unprocessable_entity
+    begin
+      if @endpoint.save!
+         render json: {
+         endpoint: EndpointSerializer.new(@endpoint).serializable_hash[:data][:attributes]
+        }
+      end
+    rescue => e
+      render json: e.message
     end
   end
 
   # PATCH/PUT /endpoints/1
   def update
-    if @endpoint.update(endpoint_params)
-        render json: {
-        endpoint: EndpointSerializer.new(@endpoint).serializable_hash[:data][:attributes]
-      }
-    else
-      render json: @endpoint.errors, status: :unprocessable_entity
+    begin
+      if @endpoint.update!(endpoint_params)
+          render json: {
+          endpoint: EndpointSerializer.new(@endpoint).serializable_hash[:data][:attributes]
+        }
+      end
+    rescue => e
+      render json: e.message
     end
   end
 
@@ -48,15 +57,19 @@ class Admins::EndpointsController < ApplicationController
           endpoint: @endpoint
         }
       @endpoint.destroy
-    rescue 
-      @endpoint.errors
+    rescue => e
+      render json: e.message
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_endpoint
-      @endpoint = Endpoint.find(params[:id])
+      begin
+        @endpoint = Endpoint.find(params[:id])
+      rescue => e
+        render json: e.message
+      end
     end
 
     # Only allow a list of trusted parameters through.
