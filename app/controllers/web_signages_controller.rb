@@ -3,22 +3,28 @@ class WebSignagesController < ApplicationController
 
   # GET /web_signages
   def index
-    @web_signages = WebSignage.all
+    web_signages = WebSignage.all
 
-    render json: @web_signages
+    render json: {
+      web_signages: WebSignageSerializer.new(web_signages).serializable_hash[:data].map{|data| data[:attributes]}
+    }
   end
 
   # GET /web_signages/1
   def show
-    render json: @web_signage
+    render json: {
+      web_signage: WebSignageSerializer.new(@web_signage).serializable_hash[:data][:attributes]
+    }
   end
 
   # POST /web_signages
   def create
     @web_signage = WebSignage.new(web_signage_params)
 
-    if @web_signage.save
-      render json: @web_signage, status: :created, location: @web_signage
+    if @web_signage.save!
+      render json: {
+        web_signage: WebSignageSerializer.new(@web_signage).serializable_hash[:data][:attributes]
+      }
     else
       render json: @web_signage.errors, status: :unprocessable_entity
     end
@@ -27,7 +33,9 @@ class WebSignagesController < ApplicationController
   # PATCH/PUT /web_signages/1
   def update
     if @web_signage.update(web_signage_params)
-      render json: @web_signage
+      render json: {
+        web_signage: WebSignageSerializer.new(@web_signage).serializable_hash[:data][:attributes]
+      }
     else
       render json: @web_signage.errors, status: :unprocessable_entity
     end
@@ -35,6 +43,10 @@ class WebSignagesController < ApplicationController
 
   # DELETE /web_signages/1
   def destroy
+    render json: {
+      message: "you just destroyed! Websignage",
+      web_signage: @web_signage
+      }
     @web_signage.destroy
   end
 
