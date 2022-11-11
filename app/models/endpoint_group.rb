@@ -4,8 +4,8 @@ class EndpointGroup < ApplicationRecord
     validates :name, presence: true
 
     enum endpoint_type: {
-         both: 1
+         both: 1,
          audio: 2,
-         text: 3,
+         text: 3
         }
 end

@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
-  resources :web_signages
-
+  
   get '/current_user', to: 'current_user#index'
   get 'current_user/my_engine'
   
@@ -26,6 +25,8 @@ Rails.application.routes.draw do
   namespace :users do 
     resources :templates
   end
+
+  resources :web_signages
   # devise_scope :user do 
   #   post   'users/sign_up',  to: 'users/registrations#create'
   # end
