@@ -65,7 +65,13 @@ class Admins::EndpointGroupsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_endpoint_group
       begin
-        @endpoint_group = EndpointGroup.find(params[:id])
+        action = params[:action]
+        if action == "update"
+          endpointgroup = EndpointGroup.find(params[:id])
+          @endpoint_group = EndpointGroupUpdateSerializer.new(@endpoint_group).serializable_hash[:data][:attributes]
+        else
+          @endpoint_group = EndpointGroup.find(params[:id])
+        end
       rescue => e
         render json: e.message
       end
