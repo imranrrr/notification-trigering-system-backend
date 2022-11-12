@@ -1,6 +1,6 @@
 class TemplateSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :id, :name, :subject, :body, :audio, :background_color, :font_color
+  attributes :id, :name, :subject, :body, :audio, :background_color, :font_color, :user_id, :admin_id
 
   attribute :created_at do |template|
     template.created_at && template.created_at.strftime('%d/%m/%Y')
