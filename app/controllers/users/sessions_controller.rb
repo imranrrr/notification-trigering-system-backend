@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Users::SessionsController < Devise::SessionsController
-  respond_to :json
   # before_action :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in
@@ -15,9 +14,12 @@ class Users::SessionsController < Devise::SessionsController
   # end
 
   # DELETE /resource/sign_out
-  # def destroy
-  #   super
-  # end
+  def destroy
+    session[:oktastate] = nil
+    @current_user = session[:oktastate]
+    @session = session[:oktastate]
+    redirect_to root_path
+  end
 
   private
 

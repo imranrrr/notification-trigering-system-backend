@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
-  
+  root 'homes#index'
   get '/current_user', to: 'current_user#index'
-  get 'current_user/my_engine'
   
   devise_for :admins, controllers: {
       sessions: 'admins/sessions',
@@ -19,7 +18,8 @@ Rails.application.routes.draw do
 
   devise_for :users, only: [:sessions, :registrations],controllers: {
     sessions: 'users/sessions',
-    registrations: 'users/registrations'
+    registrations: 'users/registrations',
+    :omniauth_callbacks => "users/omniauth_callbacks"
   }
 
   namespace :users do 

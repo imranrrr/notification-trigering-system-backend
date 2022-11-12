@@ -24,6 +24,12 @@ gem 'fast_jsonapi'
 gem 'byebug'
 gem 'carrierwave', '~> 2.2', '>= 2.2.2'
 
+gem 'omniauth-oktaoauth'
+gem 'activerecord-session_store'
+gem 'figaro'
+gem 'omniauth-rails_csrf_protection', '~> 0.1'
+
+
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
 
