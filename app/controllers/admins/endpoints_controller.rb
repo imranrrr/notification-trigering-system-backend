@@ -24,13 +24,13 @@ class Admins::EndpointsController < ApplicationController
 
   # POST /endpoints
   def create
-    @endpoint = Endpoint.new(endpoint_params)
+    @endpoint = Endpoint.create!(endpoint_params)
     begin
-      if @endpoint.save!
-         render json: {
-         endpoint: EndpointSerializer.new(@endpoint).serializable_hash[:data][:attributes]
-        }
-      end
+      # if @endpoint.save!
+      #    render json: {
+      #    endpoint: @endpoint #EndpointSerializer.new(@endpoint).serializable_hash[:data][:attributes]
+      #   }
+      # end
     rescue => e
       render json: e.message
     end
@@ -66,9 +66,11 @@ class Admins::EndpointsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_endpoint
       begin
+        
+        action = params[:action]
         if action == "update"
-          endpoint = Endpoint.find(params[:id])
-          @endpoint = EndpointUpdateSerializer.new(endpoint).serializable_hash[:data][:attributes]
+          @endpoint = Endpoint.find(params[:id])
+          # @endpoint = EndpointUpdateSerializer.new(endpoint).serializable_hash[:data][:attributes]
         else
           @endpoint = Endpoint.find(params[:id])
         end
@@ -80,5 +82,9 @@ class Admins::EndpointsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def endpoint_params
       params.require(:endpoint).permit(:name, :description, :location_id, :endpoint_group_id, :destination_id, :admin_id)
+    end
+
+    def destination_params
+      params.require(:destination).permit(:destination_type, :resource_url, :network_distribution_id)
     end
 end
