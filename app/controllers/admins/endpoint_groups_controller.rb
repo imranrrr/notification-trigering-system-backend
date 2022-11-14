@@ -68,7 +68,7 @@ class Admins::EndpointGroupsController < ApplicationController
         action = params[:action]
         if action == "update"
           endpointgroup = EndpointGroup.find(params[:id])
-          @endpoint_group = EndpointGroupUpdateSerializer.new(@endpoint_group).serializable_hash[:data][:attributes]
+          @endpoint_group = EndpointGroupUpdateSerializer.new(endpoint_group).serializable_hash[:data][:attributes]
         else
           @endpoint_group = EndpointGroup.find(params[:id])
         end
