@@ -69,7 +69,9 @@ class Admins::EndpointsController < ApplicationController
         if action == "update"
           endpoint = Endpoint.find(params[:id])
           @endpoint = EndpointUpdateSerializer.new(endpoint).serializable_hash[:data][:attributes]
-        @endpoint = Endpoint.find(params[:id])
+        else
+          @endpoint = Endpoint.find(params[:id])
+        end
       rescue => e
         render json: e.message
       end
