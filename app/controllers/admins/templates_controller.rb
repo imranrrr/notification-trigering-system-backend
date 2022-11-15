@@ -70,6 +70,6 @@ class Admins::TemplatesController < ApplicationController
     end
 
     def template_params
-      params.require(:template).permit(:name, :subject, :body, :audio, :font_color, :user_id, :background_color, :admin_id )
+      params.permit(:name, :subject, :body, :audio, :font_color, :user_id, :background_color, :admin_id )
     end
 end
