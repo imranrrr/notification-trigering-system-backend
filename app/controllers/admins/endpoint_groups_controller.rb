@@ -15,7 +15,7 @@ class Admins::EndpointGroupsController < ApplicationController
   def show
     begin
       render json: {
-        endpoint_group: EndpointGroupSerializer.new(@endpoint_group).serializable_hash[:data][:attributes]
+        endpoint_group: EndpointGroupUpdateSerializer.new(@endpoint_group).serializable_hash[:data][:attributes]
       }
     rescue => e
       render json: e.message
@@ -62,22 +62,14 @@ class Admins::EndpointGroupsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_endpoint_group
       begin
-        action = params[:action]
-        if action == "update"
-          endpointgroup = EndpointGroup.find(params[:id])
-          @endpoint_group = EndpointGroupUpdateSerializer.new(endpoint_group).serializable_hash[:data][:attributes]
-        else
           @endpoint_group = EndpointGroup.find(params[:id])
-        end
       rescue => e
         render json: e.message
       end
     end
 
-    # Only allow a list of trusted parameters through.
     def endpoint_group_params
       params.require(:endpoint_group).permit(:name, :description, :endpoint_type, :admin_id)
     end
