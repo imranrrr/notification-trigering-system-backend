@@ -38,11 +38,10 @@ class Admins::TemplatesController < ApplicationController
 
   def update
     begin
-    if @template.update!(template_params)
+    @template.update!(template_params)
        render json: {
            template: TemplateSerializer.new(@template).serializable_hash[:data][:attributes]
          }
-    end
     rescue => e
       render json: e.message
     end
@@ -70,6 +69,10 @@ class Admins::TemplatesController < ApplicationController
     end
 
     def template_params
-      params.permit(:name, :subject, :body, :audio, :font_color, :user_id, :background_color, :admin_id )
+      if params[:audio].to_s.include? "UploadedFile"
+        params.permit(:id, :name, :subject, :body, :audio, :font_color, :user_id, :background_color, :admin_id )
+      else
+        params.permit(:id, :name, :subject, :body, :font_color, :user_id, :background_color, :admin_id )
+      end
     end
 end
