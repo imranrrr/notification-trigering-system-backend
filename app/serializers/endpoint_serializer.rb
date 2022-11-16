@@ -7,9 +7,15 @@ class EndpointSerializer
 
   attribute :location do |endpoint|
     if endpoint.location.present?
-      {name: endpoint.location.name}
+      {id: endpoint.location.id, name: endpoint.location.name}
     end
   end 
+
+  attribute :endpoint_group do |endpoint|
+    if endpoint.endpoint_group.present?
+      {id: endpoint.endpoint_group.id, name: endpoint.endpoint_group.name }
+    end
+  end
 
   attribute :destination do |endpoint|
     if endpoint.destination.present?
