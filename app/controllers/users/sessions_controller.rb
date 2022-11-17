@@ -31,12 +31,14 @@ class Users::SessionsController < Devise::SessionsController
   def respond_to_on_destroy
     # jwt_payload = JWT.decode(params[:Authorization].split('')[1], Rails.application.credentials.fetch(:secret_key_base)).first
     # current user = User.find(jwt_payload['sub'])
-    if current_user
+    begin
+    if !current_user
       render json: {
         status: 200,
         message: "logged out successfully"
       }, status: :ok
-    else
+    end
+  rescue
       render json: {
         status: 401,
         message: "Couldn't find an active session."

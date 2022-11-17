@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     resources :endpoints
     resources :web_signages
     resources :integrations
+    resources :users
     end
 
 
@@ -23,6 +24,8 @@ Rails.application.routes.draw do
     sessions: 'users/sessions',
     registrations: 'users/registrations'
   }
+
+  
 
   namespace :users do 
     resources :templates
