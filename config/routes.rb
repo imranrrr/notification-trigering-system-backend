@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     resources :destinations
     resources :endpoints
     resources :web_signages
+    resources :integrations
     end
 
 

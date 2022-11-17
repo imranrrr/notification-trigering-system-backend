@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_10_130219) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_17_121339) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -64,6 +64,22 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_10_130219) do
     t.index ["location_id"], name: "index_endpoints_on_location_id"
   end
 
+  create_table "integrations", force: :cascade do |t|
+    t.string "name"
+    t.string "client_id"
+    t.string "client_secret"
+    t.string "base_url"
+    t.string "expires_in"
+    t.string "refresh_token"
+    t.string "access_token"
+    t.string "code"
+    t.integer "admin_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_id"], name: "index_integrations_on_admin_id"
+    t.index ["client_id"], name: "index_integrations_on_client_id"
+  end
+
   create_table "locations", force: :cascade do |t|
     t.string "name"
     t.integer "admin_id"
@@ -72,6 +88,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_10_130219) do
     t.integer "web_signage_id"
     t.string "description"
     t.index ["admin_id"], name: "index_locations_on_admin_id"
+  end
+
+  create_table "sessions", force: :cascade do |t|
+    t.string "session_id", null: false
+    t.text "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
+    t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
   create_table "templates", force: :cascade do |t|
@@ -99,9 +124,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_10_130219) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "jti", null: false
+    t.string "provider"
+    t.string "uid"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
+    t.index ["provider"], name: "index_users_on_provider"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["uid"], name: "index_users_on_uid"
   end
 
   create_table "web_signages", force: :cascade do |t|

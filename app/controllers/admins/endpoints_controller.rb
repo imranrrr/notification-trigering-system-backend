@@ -26,11 +26,11 @@ class Admins::EndpointsController < ApplicationController
   def create
     @endpoint = Endpoint.create!(endpoint_params)
     begin
-      # if @endpoint.save!
-      #    render json: {
-      #    endpoint: @endpoint #EndpointSerializer.new(@endpoint).serializable_hash[:data][:attributes]
-      #   }
-      # end
+      if @endpoint.save!
+         render json: {
+         endpoint: @endpoint #EndpointSerializer.new(@endpoint).serializable_hash[:data][:attributes]
+        }
+      end
     rescue => e
       render json: e.message
     end
