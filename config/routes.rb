@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     resources :locations
     resources :destinations
     resources :endpoints
+    resources :web_signages
     end
 
 
@@ -25,8 +26,6 @@ Rails.application.routes.draw do
   namespace :users do 
     resources :templates
   end
-
-  resources :web_signages
   # devise_scope :user do 
   #   post   'users/sign_up',  to: 'users/registrations#create'
   # end
