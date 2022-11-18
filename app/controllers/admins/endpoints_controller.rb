@@ -15,7 +15,7 @@ class Admins::EndpointsController < ApplicationController
   def show
     begin
       render json: {
-        endpoint: EndpointSerializer.new(@endpoint).serializable_hash[:data][:attributes]
+        endpoint: EndpointUpdateSerializer.new(@endpoint).serializable_hash[:data][:attributes]
       }
     rescue => e
       render json: e.message
@@ -25,12 +25,17 @@ class Admins::EndpointsController < ApplicationController
   # POST /endpoints
   def create
     @endpoint = Endpoint.create!(endpoint_params)
+    if destination_params.present?
+      @destination = Destination.new(destination_params)
+    end
     begin
-      if @endpoint.save!
-         render json: {
-         endpoint: @endpoint #EndpointSerializer.new(@endpoint).serializable_hash[:data][:attributes]
-        }
+      if  @destination.present? && @destination.save!
+          @endpoint.update!(destination_id: @destination.id)
       end
+      @endpoint.reload
+      render json: {
+          endpoint: EndpointSerializer.new(@endpoint).serializable_hash[:data][:attributes]
+          }
     rescue => e
       render json: e.message
     end
@@ -40,33 +45,45 @@ class Admins::EndpointsController < ApplicationController
   def update
     begin
       if @endpoint.update!(endpoint_params)
-          render json: {
-          endpoint: EndpointSerializer.new(@endpoint).serializable_hash[:data][:attributes]
-        }
+        if @endpoint.destination.present? && destination_params.present?
+          existing_destination = Destination.find_by(id: @endpoint.destination_id)
+          existing_destination.update!(destination_params)
+        elsif destination_params.present?
+          destination = Destination.new(destination_params)
+          if destination.save!
+            @endpoint.update!(destination_id: destination.id) 
+          end
+        end
+        @endpoint.reload
+        render json: {
+              endpoint: EndpointSerializer.new(@endpoint).serializable_hash[:data][:attributes]
+            }
       end
     rescue => e
       render json: e.message
     end
   end
 
-  # DELETE /endpoints/1
   def destroy
     begin
-      render json: {
-          message: "you just destroyed! Endpoint",
-          endpoint: @endpoint
-        }
-      @endpoint.destroy
+      if  @endpoint.destination.present?
+          @destination = Destination.find_by(id: @endpoint.destination_id)
+          @destination.destroy!
+          render json: {
+            message: "you just destroyed! Endpoint",
+            endpoint: @endpoint
+          }
+      else
+        @endpoint.destroy!
+      end
     rescue => e
       render json: e.message
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_endpoint
       begin
-        
         action = params[:action]
         if action == "update"
           @endpoint = Endpoint.find(params[:id])
@@ -85,6 +102,12 @@ class Admins::EndpointsController < ApplicationController
     end
 
     def destination_params
-      params.require(:destination).permit(:destination_type, :resource_url, :network_distribution_id)
+      begin
+        if params[:destination].present?
+          params.require(:destination).permit(:destination_type, :resource_url, :network_distribution_id)
+        end
+      rescue => e
+        render json: e.message
+      end
     end
 end
