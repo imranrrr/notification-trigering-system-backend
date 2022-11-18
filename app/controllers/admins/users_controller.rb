@@ -5,7 +5,7 @@ class Admins::UsersController < ApplicationController
         begin
             @users = User.all
             render json:{
-              Users: UserSerializer.new(@users).serializable_hash[:data].map{|data| data[:attributes]}
+              users: UserSerializer.new(@users).serializable_hash[:data].map{|data| data[:attributes]}
             }
           rescue => e
             render json: e.message
@@ -15,7 +15,7 @@ class Admins::UsersController < ApplicationController
     def show
         begin
             render json: {
-                user: UserSerializer.new(@user).serializable_hash[:data][:attributes]
+                user: UpdateUserSerializer.new(@user).serializable_hash[:data][:attributes]
                 }
         rescue => e
             render json: e.message
@@ -66,6 +66,6 @@ class Admins::UsersController < ApplicationController
     end
 
     def user_params
-        params.require(:user).permit(:first_name, :last_name, :email, :encrypted_password, :bypass_user, :role, :provider, :uid)
+        params.require(:user).permit(:first_name, :last_name, :email, :password, :bypass_user, :role, :provider, :uid)
     end
 end
