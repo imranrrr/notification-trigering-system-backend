@@ -19,13 +19,14 @@ class Admins::RegistrationsController < Devise::RegistrationsController
 
   # PUT /resource
   def update
+    byebug
     begin
       current_admin.update!(configure_account_update_params)
       render json: {
         status: 200,
         message: "Account updated successfully!"
       }
-      session.delete(:current_admin)
+      session.clear
     rescue => edit
       render json: e.message
     end
