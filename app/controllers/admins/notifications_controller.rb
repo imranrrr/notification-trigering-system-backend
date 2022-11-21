@@ -1,15 +1,14 @@
 class Admins::NotificationsController < ApplicationController
-    before_action :set_notification, only: %i[ show ]
+    before_action :set_notification, only: %i[ show destroy ]
   
     def index
         begin
-            @notifications = Notification.all
-  
+            notifications = Notification.all
             render json:  {
-                notifications: NotificationSerializer.new(@notifications).serializable_hash[:data].map{|data| data[:attributes]}
+                notifications: NotificationSerializer.new(notifications).serializable_hash[:data].map{|data| data[:attributes]}
             }
         rescue => e
-            render json: e.message
+            render json: {status: 500, message: e.message}
         end
     end
   
@@ -19,33 +18,37 @@ class Admins::NotificationsController < ApplicationController
                 notification: NotificationSerializer.new(@notification).serializable_hash[:data][:attributes]
             }
         rescue => e
-            render json: e.message
+            render json: {status: 500, message: e.message}
         end
     end
   
     def manage_notifications
         begin
             endpoint_ids = notification_params[:endpoint_ids]
-            @notifications = []
+            notifications = []
             endpoint_ids.each do |endpoint_id|
-                @notifications << Notification.create!(template_id: notification_params[:template_id], endpoint_id: endpoint_id, user_id: notification_params[:user_id], admin_id: notification_params[:admin_id])
+                notifications << Notification.create!(template_id: notification_params[:template_id], endpoint_id: endpoint_id, user_id: notification_params[:user_id], admin_id: notification_params[:admin_id])
             end
             render json: {
-                notifications: NotificationSerializer.new(@notifications).serializable_hash[:data].map{|data| data[:attributes]}
+                notifications: NotificationSerializer.new(notifications).serializable_hash[:data].map{|data| data[:attributes]}
             }
         rescue => e
-            render json: e.message
+            render json: {status: 500, message: e.message}
         end
     end
   
   
     def destroy
-      render json: {
-          status: 200,
-          message: "You just Destroyed! Notification!",
-          notification: @notification
-      }
-      @notification.destroy
+        begin
+            render json: {
+                status: 200,
+                message: "You just Destroyed! Notification!",
+                notification: @notification
+            }
+            @notification.destroy
+        rescue => e
+            render json: {status: 500, message: e.message} 
+        end
     end
   
     private

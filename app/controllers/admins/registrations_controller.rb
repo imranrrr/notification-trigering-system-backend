@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
 class Admins::RegistrationsController < Devise::RegistrationsController
-  # before_action :authenticate_admin!, only: %i[edit update]
   respond_to :json
-
-  # before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
 
   def create
@@ -17,9 +14,7 @@ class Admins::RegistrationsController < Devise::RegistrationsController
     }
   end
 
-  # PUT /resource
   def update
-    byebug
     begin
       current_admin.update!(configure_account_update_params)
       render json: {
@@ -33,8 +28,6 @@ class Admins::RegistrationsController < Devise::RegistrationsController
   end
 
   private
-
-   # GET /resource/edit
 
   def respond_with(resource, _opts = {})
     if resource.persisted?

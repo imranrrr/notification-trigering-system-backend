@@ -1,12 +1,11 @@
 class Users::NotificationsController < ApplicationController
-    before_action :set_notification, only: %i[ show ]
+    before_action :set_notification, only: %i[ show destroy ]
 
     def index
         begin
-            @notifications = Notification.all
-  
+            notifications = Notification.all
             render json:  {
-                notifications: NotificationSerializer.new(@notifications).serializable_hash[:data].map{|data| data[:attributes]}
+                notifications: NotificationSerializer.new(notifications).serializable_hash[:data].map{|data| data[:attributes]}
             }
         rescue => e
             render json: {status: 500, message: e.message}
@@ -25,12 +24,12 @@ class Users::NotificationsController < ApplicationController
 
   def manage_notifications
     endpoint_ids = notification_params[:endpoint_ids]
-    @notifications = []
+    notifications = []
     endpoint_ids.each do |endpoint_id|
-        @notifications << Notification.create!(template_id: notification_params[:template_id], endpoint_id: endpoint_id, user_id: notification_params[:user_id], admin_id: notification_params[:admin_id])
+        notifications << Notification.create!(template_id: notification_params[:template_id], endpoint_id: endpoint_id, user_id: notification_params[:user_id], admin_id: notification_params[:admin_id])
     end
     render json: {
-        notifications: NotificationSerializer.new(@notifications).serializable_hash[:data].map{|data| data[:attributes]}
+        notifications: NotificationSerializer.new(notifications).serializable_hash[:data].map{|data| data[:attributes]}
     }
 
   end
