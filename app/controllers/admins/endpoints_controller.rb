@@ -8,7 +8,7 @@ class Admins::EndpointsController < ApplicationController
         endpoints: EndpointSerializer.new(endpoints).serializable_hash[:data].map{|data| data[:attributes]}
       }
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -18,7 +18,7 @@ class Admins::EndpointsController < ApplicationController
         endpoint: EndpointUpdateSerializer.new(@endpoint).serializable_hash[:data][:attributes]
       }
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -37,7 +37,7 @@ class Admins::EndpointsController < ApplicationController
           endpoint: EndpointSerializer.new(@endpoint).serializable_hash[:data][:attributes]
           }
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -60,7 +60,7 @@ class Admins::EndpointsController < ApplicationController
             }
       end
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -77,7 +77,7 @@ class Admins::EndpointsController < ApplicationController
         @endpoint.destroy!
       end
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -92,7 +92,7 @@ class Admins::EndpointsController < ApplicationController
           @endpoint = Endpoint.find(params[:id])
         end
       rescue => e
-        render json: e.message
+        render json: {status: 500, message: e.message}
       end
     end
 
@@ -107,7 +107,7 @@ class Admins::EndpointsController < ApplicationController
           params.require(:destination).permit(:destination_type, :resource_url, :network_distribution_id)
         end
       rescue => e
-        render json: e.message
+        render json: {status: 500, message: e.message}
       end
     end
 end

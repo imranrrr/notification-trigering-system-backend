@@ -38,32 +38,15 @@ class Admins::NotificationsController < ApplicationController
         end
     end
   
-    # def update
-    #   if @notification.update(notification_params)
-    #     render json: @notification
-    #   else
-    #     render json: @notification.errors, status: :unprocessable_entity
-    #   end
-    # end
   
-    # def destroy
-    #   @notification.destroy
-    # end
-
-    # def manage_notifications
-    #     byebug
-    #     template_id = notification_params[:template_id]
-    #     endpoint_ids = notification_params[:endpoint_ids]
-    #     @template = Template.find_by(id: template_id)
-    #     @notifications = []
-    #     endpoint_ids.each do |id|
-    #         @notifications << Endpoint.find_by(id: id) 
-    #     end
-    #     render json: {
-    #         template: TemplateSerializer.new(@template).serializable_hash[:data][:attributes],
-    #         endpoints: NotificationSerializer.new(@notifications).serializable_hash[:data].map{|data| data[:attributes]}
-    #     }
-    # end
+    def destroy
+      render json: {
+          status: 200,
+          message: "You just Destroyed! Notification!",
+          notification: @notification
+      }
+      @notification.destroy
+    end
   
     private
       def set_notification

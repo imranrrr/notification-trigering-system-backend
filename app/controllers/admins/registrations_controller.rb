@@ -27,8 +27,8 @@ class Admins::RegistrationsController < Devise::RegistrationsController
         message: "Account updated successfully!"
       }
       session.clear
-    rescue => edit
-      render json: e.message
+    rescue => e
+      render json: {status: 500, message: e.message}
     end
   end
 

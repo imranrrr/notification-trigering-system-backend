@@ -8,7 +8,7 @@ class Admins::EndpointGroupsController < ApplicationController
         endpoint_groups: EndpointGroupSerializer.new(endpoint_groups).serializable_hash[:data].map{|data| data[:attributes]}
       }
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -18,7 +18,7 @@ class Admins::EndpointGroupsController < ApplicationController
         endpoint_group: EndpointGroupUpdateSerializer.new(@endpoint_group).serializable_hash[:data][:attributes]
       }
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -31,7 +31,7 @@ class Admins::EndpointGroupsController < ApplicationController
         }
       end
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -44,7 +44,7 @@ class Admins::EndpointGroupsController < ApplicationController
           }
       end
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -57,7 +57,7 @@ class Admins::EndpointGroupsController < ApplicationController
         }
       @endpoint_group.destroy
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -66,7 +66,7 @@ class Admins::EndpointGroupsController < ApplicationController
       begin
           @endpoint_group = EndpointGroup.find(params[:id])
       rescue => e
-        render json: e.message
+        render json: {status: 500, message: e.message}
       end
     end
 

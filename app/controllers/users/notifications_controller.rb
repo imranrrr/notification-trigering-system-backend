@@ -9,7 +9,7 @@ class Users::NotificationsController < ApplicationController
                 notifications: NotificationSerializer.new(@notifications).serializable_hash[:data].map{|data| data[:attributes]}
             }
         rescue => e
-            render json: e.message
+            render json: {status: 500, message: e.message}
         end
     end
   
@@ -19,7 +19,7 @@ class Users::NotificationsController < ApplicationController
                 notification: NotificationSerializer.new(@notification).serializable_hash[:data][:attributes]
             }
         rescue => e
-            render json: e.message
+            render json: {status: 500, message: e.message}
         end
     end
 
@@ -36,41 +36,24 @@ class Users::NotificationsController < ApplicationController
   end
 
  
-#   def update
-#     if @notification.update(notification_params)
-#       render json: @notification
-#     else
-#       render json: @notification.errors, status: :unprocessable_entity
-#     end
-#   end
-
- 
-#   def destroy
-#     @notification.destroy
-#   end
-
-#   def manage_notifications
-#     byebug
-#     template_id = notification_params[:template_id]
-#     endpoint_ids = notification_params[:endpoint_ids]
-#     @template = Template.find_by(id: template_id)
-#     @endpoints = []
-#     endpoint_ids.each do |id|
-#         @endpoints << Endpoint.find_by(id: id) 
-#     end
-#     render json: {
-#         template: TemplateSerializer.new(@template).serializable_hash[:data][:attributes],
-#         endpoints: EndpointSerializer.new(@endpoints).serializable_hash[:data].map{|data| data[:attributes]}
-#     }
-# end
+  def destroy
+    begin
+      render json: {
+          status: 200,
+          message: "You just Destroyed! Notification!",
+          notification: @notification
+      }
+      @notification.destroy
+    rescue => e
+        render json: {status: 500, message: e.message}
+    end
+  end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_notification
       @notification = Notification.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def notification_params
       params.require(:notification).permit(:template_id, :admin_id, :user_id, :endpoint_ids => [] )
     end

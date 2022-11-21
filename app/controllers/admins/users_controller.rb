@@ -8,7 +8,7 @@ class Admins::UsersController < ApplicationController
               users: UserSerializer.new(@users).serializable_hash[:data].map{|data| data[:attributes]}
             }
           rescue => e
-            render json: e.message
+            render json: {status: 500, message: e.message}
           end
     end
 
@@ -18,7 +18,7 @@ class Admins::UsersController < ApplicationController
                 user: UpdateUserSerializer.new(@user).serializable_hash[:data][:attributes]
                 }
         rescue => e
-            render json: e.message
+            render json: {status: 500, message: e.message}
         end
     end
 
@@ -31,7 +31,7 @@ class Admins::UsersController < ApplicationController
             }
           end
         rescue => e
-          render json: e.message
+          render json: {status: 500, message: e.message}
         end
     end
 
@@ -43,7 +43,7 @@ class Admins::UsersController < ApplicationController
               }
             end
           rescue => e
-            render json: e.message
+            render json: {status: 500, message: e.message}
           end
     end
 
@@ -55,7 +55,7 @@ class Admins::UsersController < ApplicationController
             }
             @user.destroy!
         rescue => e
-            render json: e.message
+            render json: {status: 500, message: e.message}
         end
     end
 

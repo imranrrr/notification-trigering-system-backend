@@ -17,7 +17,7 @@ Rails.application.routes.draw do
     resources :web_signages
     resources :integrations
     resources :users
-    resources :notifications, only: %i[index show]
+    resources :notifications, only: %i[index show destroy]
     post 'notifications/manage_notifications'
   end
 
@@ -31,7 +31,7 @@ Rails.application.routes.draw do
 
   namespace :users do 
     resources :templates
-    resources :notifications, only: %i[index show]
+    resources :notifications, only: %i[index show destroy]
     post 'notifications/manage_notifications'
   end
   # devise_scope :user do 

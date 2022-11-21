@@ -8,7 +8,7 @@ class Admins::LocationsController < ApplicationController
         locations: LocationSerializer.new(locations).serializable_hash[:data].map{|data| data[:attributes]}
       }
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -18,7 +18,7 @@ class Admins::LocationsController < ApplicationController
           location: LocationSerializer.new(@location).serializable_hash[:data][:attributes]
         }
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -31,7 +31,7 @@ class Admins::LocationsController < ApplicationController
       }
     end
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -43,7 +43,7 @@ class Admins::LocationsController < ApplicationController
         }
       end
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -55,7 +55,7 @@ class Admins::LocationsController < ApplicationController
         }
       @location.destroy
     rescue => e 
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -64,7 +64,7 @@ class Admins::LocationsController < ApplicationController
       begin  
         @location = Location.find(params[:id])
       rescue => e
-        render json: e.message
+        render json: {status: 500, message: e.message}
       end
     end
 
