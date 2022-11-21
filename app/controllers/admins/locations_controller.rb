@@ -35,6 +35,7 @@ class Admins::LocationsController < ApplicationController
             xml.node3
           end
         }.to_xml
+      Dir.mkdir("public/xmlForLocations") unless Dir.exists?("public/xmlForLocations")
       newXmlFile = File.new("public/xmlForLocations/xml_of_location_#{location.id}.xml", "w")
       newXmlFile.puts(xml)
       newXmlFile.close
