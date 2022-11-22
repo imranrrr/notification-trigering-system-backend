@@ -31,8 +31,8 @@ class Admins::LocationsController < ApplicationController
         createXml = CreateXmlFileService.new(location).create_xml_file()
         render json: {
           location: LocationSerializer.new(location).serializable_hash[:data][:attributes]
-      }
-    end
+        }
+      end
     rescue => e
       render json: {status: 500, message: e.message}
     end
