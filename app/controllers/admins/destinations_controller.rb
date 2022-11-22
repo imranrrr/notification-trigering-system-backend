@@ -8,7 +8,7 @@ class Admins::DestinationsController < ApplicationController
         destinations: DestinationSerializer.new(destinations).serializable_hash[:data].map{|data| data[:attributes]}
         }
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -18,7 +18,7 @@ class Admins::DestinationsController < ApplicationController
         destination: DestinationSerializer.new(@destination).serializable_hash[:data][:attributes]
       }
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -32,7 +32,7 @@ class Admins::DestinationsController < ApplicationController
            }
       end
     rescue => e
-        render json: e.message
+        render json: {status: 500, message: e.message}
     end
   end
 
@@ -44,7 +44,7 @@ class Admins::DestinationsController < ApplicationController
           destination: DestinationSerializer.new(@destination).serializable_hash[:data][:attributes]
         }
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -57,7 +57,7 @@ class Admins::DestinationsController < ApplicationController
         }
       @destination.destroy
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -66,7 +66,7 @@ class Admins::DestinationsController < ApplicationController
       begin
         @destination = Destination.find(params[:id])
       rescue => e
-        render json: e.message
+        render json: {status: 500, message: e.message}
       end
     end
 

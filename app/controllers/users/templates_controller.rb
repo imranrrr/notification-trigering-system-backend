@@ -9,7 +9,7 @@ class Users::TemplatesController < ApplicationController
           templates: TemplateSerializer.new(templates).serializable_hash[:data].map{|data| data[:attributes]}
         }
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -19,7 +19,7 @@ class Users::TemplatesController < ApplicationController
         template: TemplateSerializer.new(@template).serializable_hash[:data][:attributes]
       }
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -32,7 +32,7 @@ class Users::TemplatesController < ApplicationController
         }
       end
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -44,7 +44,7 @@ class Users::TemplatesController < ApplicationController
          }
     end
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -56,7 +56,7 @@ class Users::TemplatesController < ApplicationController
       }
       @template.destroy
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -65,7 +65,7 @@ class Users::TemplatesController < ApplicationController
       begin
         @template = Template.find(params[:id])
       rescue => e
-        render json: e.message
+        render json: {status: 500, message: e.message}
       end
     end
 

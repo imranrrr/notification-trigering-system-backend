@@ -8,7 +8,7 @@ class Admins::WebSignagesController < ApplicationController
         web_signages: WebSignageSerializer.new(web_signages).serializable_hash[:data].map{|data| data[:attributes]}
       }
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -18,7 +18,7 @@ class Admins::WebSignagesController < ApplicationController
         web_signage: WebSignageSerializer.new(@web_signage).serializable_hash[:data][:attributes]
       }
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -31,7 +31,7 @@ class Admins::WebSignagesController < ApplicationController
         }
       end
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -43,7 +43,7 @@ class Admins::WebSignagesController < ApplicationController
         }
       end
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -55,7 +55,7 @@ class Admins::WebSignagesController < ApplicationController
         }
       @web_signage.destroy
     rescue => e
-      render json: e.message
+      render json: {status: 500, message: e.message}
     end
   end
 
@@ -64,7 +64,7 @@ class Admins::WebSignagesController < ApplicationController
       begin
         @web_signage = WebSignage.find(params[:id])
       rescue => e
-        render json: e.message
+        render json: {status: 500, message: e.message}
       end
     end
 
