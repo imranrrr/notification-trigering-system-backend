@@ -28,17 +28,7 @@ class Admins::LocationsController < ApplicationController
     location = Location.new(location_params)
     begin
       if location.save!
-        xml = Nokogiri::XML::Builder.new { |xml|
-          xml.body do
-            xml.node1 location.name
-            xml.node2 location.description 
-            xml.node3
-          end
-        }.to_xml
-      Dir.mkdir("public/xmlForLocations") unless Dir.exists?("public/xmlForLocations")
-      newXmlFile = File.new("public/xmlForLocations/xml_of_location_#{location.id}.xml", "w")
-      newXmlFile.puts(xml)
-      newXmlFile.close
+        createXml = CreateXmlFileService.new(location).create_xml_file()
         render json: {
           location: LocationSerializer.new(location).serializable_hash[:data][:attributes]
       }
@@ -54,16 +44,16 @@ class Admins::LocationsController < ApplicationController
           #... For Testing we Are updating xml file here ...
 
          filename = "public/xmlForLocations/xml_of_location_#{@location.id}.xml"
-         file = File.read(filename)
-         xml = Nokogiri::XML(file)
-         xml.at_css('node1').content =  @location.name
-         xml.at_css('node2').content = ""
-         File.write(filename, xml)
-
-          #... For Testing we Are updating xml file here ...
-         render json: {
-           location: LocationSerializer.new(@location).serializable_hash[:data][:attributes]
-         }
+         if File.exist?(filename)
+          file = File.read(filename)
+          xml = Nokogiri::XML(file)
+          xml.at_css('h1').content =  @location.name
+          File.write(filename, xml)
+        end
+            #... For Testing we Are updating xml file here ...
+        render json: {
+          location: LocationSerializer.new(@location).serializable_hash[:data][:attributes]
+        }
       end
     rescue => e
       render json: {status: 500, message: e.message}
