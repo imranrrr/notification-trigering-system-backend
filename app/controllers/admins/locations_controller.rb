@@ -1,8 +1,6 @@
 class Admins::LocationsController < ApplicationController
   before_action :set_location, only: %i[ show update destroy ]
 
-  require 'nokogiri'
-
   def index
     begin
       locations = Location.all
@@ -41,16 +39,6 @@ class Admins::LocationsController < ApplicationController
   def update
     begin
       if @location.update!(location_params)
-          #... For Testing we Are updating xml file here ...
-
-         filename = "public/xmlForLocations/xml_of_location_#{@location.id}.xml"
-         if File.exist?(filename)
-          file = File.read(filename)
-          xml = Nokogiri::XML(file)
-          xml.at_css('h1').content =  @location.name
-          File.write(filename, xml)
-        end
-            #... For Testing we Are updating xml file here ...
         render json: {
           location: LocationSerializer.new(@location).serializable_hash[:data][:attributes]
         }
