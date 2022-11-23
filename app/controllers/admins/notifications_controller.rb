@@ -22,13 +22,18 @@ class Admins::NotificationsController < ApplicationController
         end
     end
   
-    def manage_notifications
+    def create
+        endpoint_ids = notification_params[:endpoint_ids]
         begin
-            Notification.manage_notifications(notification_params)
-            render json: {
-                status: 200,
-                message: "Notifications has been created! :)"
-            }
+            if endpoint_ids.length > 0
+                endpoint_ids.each do |endpoint_id|
+                    notification = Notification.create!(template_id: notification_params[:template_id], endpoint_id: endpoint_id, user_id: notification_params[:user_id], admin_id: notification_params[:admin_id]) 
+                end
+                render json: {
+                    status: 200,
+                    message: "Notifications has been created! :)"
+                }
+            end
         rescue => e
             render json: {status: 500, message: e.message}
         end
