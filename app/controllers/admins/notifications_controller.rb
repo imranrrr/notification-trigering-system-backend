@@ -28,7 +28,6 @@ class Admins::NotificationsController < ApplicationController
             render json: {
                 status: 200,
                 message: "Notifications has been created! :)"
-                # notifications: NotificationSerializer.new(notifications).serializable_hash[:data].map{|data| data[:attributes]}
             }
         rescue => e
             render json: {status: 500, message: e.message}

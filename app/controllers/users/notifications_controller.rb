@@ -23,14 +23,15 @@ class Users::NotificationsController < ApplicationController
     end
 
   def manage_notifications
-    endpoint_ids = notification_params[:endpoint_ids]
-    notifications = []
-    endpoint_ids.each do |endpoint_id|
-        notifications << Notification.create!(template_id: notification_params[:template_id], endpoint_id: endpoint_id, user_id: notification_params[:user_id], admin_id: notification_params[:admin_id])
+    begin
+        Notification.manage_notifications(notification_params)
+        render json: {
+            status: 200,
+            message: "Notifications has been created! :)"
+        }
+    rescue => e
+        render json: {status: 500, message: e.message}
     end
-    render json: {
-        notifications: NotificationSerializer.new(notifications).serializable_hash[:data].map{|data| data[:attributes]}
-    }
 
   end
 
