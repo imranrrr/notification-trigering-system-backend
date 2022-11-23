@@ -7,6 +7,7 @@ class UpdateXmlFileService
     end
 
     def update_xml_file_with_notification
+        begin
         filename = "public/xmlForLocations/xml_of_location_#{@location.id}.xml"
         if File.exist?(filename)
             file = File.read(filename)
@@ -16,7 +17,10 @@ class UpdateXmlFileService
             File.write(filename, xml)
         else
             CreateXmlFileService.new(@location).create_xml_file()
-            UpdateXmlFileService.new(@location, @template).update_xml_file()
+            UpdateXmlFileService.new(@location, @template).update_xml_file_with_notification()
+        end
+        rescue Exception
+            raise ArgumentError, "Something went wrong while updating xml file! :(, Either Location has not found or Template has not found!"
         end
     end
 

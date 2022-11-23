@@ -7,7 +7,7 @@ class CreateXmlFileService
     end
 
     def create_xml_file
-      if @WebSignage.present?
+      begin
         xml = Nokogiri::XML::Builder.new { |xml|
           xml.body do
               xml.h1(@location.name, 'style' => "font-size: #{@WebSignage.landscape_title_width}; font-weight: bold" )
@@ -16,9 +16,11 @@ class CreateXmlFileService
           end
         }.to_xml
         Dir.mkdir("public/xmlForLocations") unless Dir.exists?("public/xmlForLocations")
-        newXmlFile = File.new("public/xmlForLocations/xml_of_location_#{@location.id}.xml", "w") # unless File.exist?("public/xmlForLocations/xml_of_location_#{@locations.id}")
+        newXmlFile = File.new("public/xmlForLocations/xml_of_location_#{@location.id}.xml", "w")
         newXmlFile.puts(xml)
         newXmlFile.close
+      rescue Exception
+        raise ArgumentError, "Something went wrong while creating xml file! :(, Either Location has not been created or Web signage is not present!!"
       end
     end
 end
