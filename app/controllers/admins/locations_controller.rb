@@ -26,10 +26,11 @@ class Admins::LocationsController < ApplicationController
     location = Location.new(location_params)
     begin
       if location.save!
+        createXml = CreateXmlFileService.new(location).create_xml_file()
         render json: {
           location: LocationSerializer.new(location).serializable_hash[:data][:attributes]
-      }
-    end
+        }
+      end
     rescue => e
       render json: {status: 500, message: e.message}
     end
@@ -54,6 +55,8 @@ class Admins::LocationsController < ApplicationController
           location: @location
         }
       @location.destroy
+      filename = "public/xmlForLocations/xml_of_location_#{@location.id}.xml"
+      File.delete(filename) if File.exist?(filename)
     rescue => e 
       render json: {status: 500, message: e.message}
     end
