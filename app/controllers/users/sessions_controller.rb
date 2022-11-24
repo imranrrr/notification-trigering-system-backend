@@ -4,20 +4,6 @@ class Users::SessionsController < Devise::SessionsController
   respond_to :json
   # before_action :configure_sign_in_params, only: [:create]
 
-  # GET /resource/sign_in
-  # def new
-  #   super
-  # end
-
-  # POST /resource/sign_in
-  # def create
-  #   super
-  # end
-
-  # DELETE /resource/sign_out
-  # def destroy
-  #   super
-  # end
 
   private
 
@@ -29,8 +15,6 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def respond_to_on_destroy
-    # jwt_payload = JWT.decode(params[:Authorization].split('')[1], Rails.application.credentials.fetch(:secret_key_base)).first
-    # current user = User.find(jwt_payload['sub'])
     begin
     if !current_user
       render json: {
