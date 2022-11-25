@@ -4,6 +4,13 @@ class UserMailer < ApplicationMailer
     def welcome_email
       @user = params[:user]
       @url  = 'http://localhost:3001'
-      mail(to: @user.email, subject: 'Welcome to My Awesome Site')
+      mail(to: @user.email, subject: 'Welcome to NTS!')
     end
+
+    def notification_email
+      byebug
+        @user = params[:user]
+        @url  = 'http://localhost:3001'
+        mail(to: @user.email, subject: 'Notification Sent!')
+      end
 end

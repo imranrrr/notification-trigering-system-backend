@@ -12,14 +12,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
-    begin
-      @user = User.new(sign_up_params)
-      if @user.save!
-        UserMailer.with(user: @user).welcome_email.deliver_now
-      end
-    rescue => e
-      render json: {status: 500, message: e.message}
-    end
+   super
   end
 
   # GET /resource/edit
