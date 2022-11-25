@@ -4,29 +4,7 @@ class Notification < ApplicationRecord
     belongs_to :admin, optional: true, foreign_key: :admin_id
     belongs_to :user, optional: true, foreign_key: :user_id
     after_save :send_notifications
-
-    # def self.send_notifications(notification_params)
-        # template = Template.find_by(id: notification_params[:template_id])
-        # endpoint_ids = notification_params[:endpoint_ids]
-        # notifications = []
-        # endpoints = []
-        # locations = []
-        # endpoint_ids.each do |endpoint_id|
-        #     notifications << Notification.create!(template_id: notification_params[:template_id], endpoint_id: endpoint_id, user_id: notification_params[:user_id], admin_id: notification_params[:admin_id])
-        #     e_point = Endpoint.find_by(id: endpoint_id)
-        #     if e_point.present?
-        #         endpoints << e_point
-        #     end
-        # end
-        # endpoints.each do |endpoint|
-        #     if endpoint.location.present?
-        #         locations << endpoint.location
-        #     end
-        # end
-        # locations.each do |location|
-        #     updateXml = UpdateXmlFileService.new(location, template).update_xml_file()
-        # end
-    # end
+    after_create :send_email
 
     def send_notifications
         template = Template.find_by(id: self.template_id)
@@ -34,6 +12,16 @@ class Notification < ApplicationRecord
         location = endpoint.location if endpoint.location.present?
         if location.present?
             updateXml = UpdateXmlFileService.new(location, template).update_xml_file_with_notification()
+        end
+    end
+
+    def send_email
+        if self.user_id != nil
+            user = User.find_by(id: self.user_id)
+            UserMailer.with(user: user).notification_email.deliver_later if user.present?
+        elsif self.admin_id != nil
+            admin = Admin.find_by(id: self.admin_id)
+            AdminMailer.with(admin: admin).notification_email.deliver_later if admin.present?
         end
     end
 end
