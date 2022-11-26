@@ -2,6 +2,9 @@ class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
   has_many :templates
   has_many :notifications
+  has_many :transactions
+  has_one :subscription
+  
   after_create :send_welcome_email
   
   # Include default devise modules. Others available are:
@@ -24,5 +27,6 @@ class User < ApplicationRecord
     rescue Exception
       raise ArgumentError, "Something Went While Sending Welcome Email! :("
     end
+
   end
 end
