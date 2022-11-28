@@ -40,7 +40,7 @@ class Admins::PackagesController < ApplicationController
           Subscription.create!(user_id: current_user.id, status: 0, package_id: @package.id)
         end
         render json: {
-          status: 200
+          clientSecret: clientSecret
         }
       rescue => e
           render json: {
@@ -50,24 +50,19 @@ class Admins::PackagesController < ApplicationController
     end
 
     def redirect_request
+        stripe_data = params[:stripeParams].split('&')
+        payment_intent = stripe_data[0].split('payment_intent=')[1]
+        stripe_result = payment_intent = stripe_data[2].split('redirect_status=')[1]
 
-      # .................still Testing...............
-      #byebug
-
-        # stripe_data = params[:stripeParams].split('&')
-        # payment_intent = stripe_data[0].split('payment_intent=')[1]
-        # stripe_result = payment_intent = stripe_data[2].split('redirect_status=')[1]
-      #   payment_intent = "pi_3M8NBXFgUyec9R660mxN7hAe"
-      #   stripe_result = params[:redirect_status]
-      #  if stripe_result == 'succeeded'
-      #    package_duration = current_user.subscription.package.duration
-      #    split_package_duration = package_duration.split(" ")
-      #    duration_in_number = split_package_duration[0].to_i
-      #    current_user.subscription.update(status: 1, start_date: Time.now, end_date: Time.now + duration_in_number.month)
-      #    current_user.update(stripe_account_intent: payment_intent, paid: true)
-      #  end
+       if stripe_result == 'succeeded'
+         package_duration = current_user.subscription.package.duration
+         split_package_duration = package_duration.split(" ")
+         duration_in_number = split_package_duration[0].to_i
+         current_user.subscription.update(status: 1, start_date: Time.now, end_date: Time.now + duration_in_number.month)
+         current_user.update(stripe_account_intent: payment_intent, paid: true)
+       end
    
-      #  render json: {status: 200, user: current_user.reload}
+       render json: {status: 200, user: current_user.reload}
    
     end
 
