@@ -5,6 +5,7 @@ class Admins::LocationsController < ApplicationController
     begin
       locations = Location.all
       render json:{
+        status: 200,
         locations: LocationSerializer.new(locations).serializable_hash[:data].map{|data| data[:attributes]}
       }
     rescue => e
@@ -15,6 +16,7 @@ class Admins::LocationsController < ApplicationController
   def show
     begin
       render json: {
+          status: 200,  
           location: LocationSerializer.new(@location).serializable_hash[:data][:attributes]
         }
     rescue => e
@@ -28,6 +30,7 @@ class Admins::LocationsController < ApplicationController
       if location.save!
         createXml = CreateXmlFileService.new(location).create_xml_file()
         render json: {
+          status: 200,
           location: LocationSerializer.new(location).serializable_hash[:data][:attributes]
         }
       end
@@ -40,6 +43,7 @@ class Admins::LocationsController < ApplicationController
     begin
       if @location.update!(location_params)
         render json: {
+          status: 200,
           location: LocationSerializer.new(@location).serializable_hash[:data][:attributes]
         }
       end
@@ -51,7 +55,7 @@ class Admins::LocationsController < ApplicationController
   def destroy
     begin
       render json: {
-          status: "you just destroyed! location",
+          status: 200,
           location: @location
         }
       @location.destroy

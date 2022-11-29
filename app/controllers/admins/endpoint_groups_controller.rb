@@ -5,6 +5,7 @@ class Admins::EndpointGroupsController < ApplicationController
     begin   
       endpoint_groups = EndpointGroup.all
       render json:{
+        status: 200,
         endpoint_groups: EndpointGroupSerializer.new(endpoint_groups).serializable_hash[:data].map{|data| data[:attributes]}
       }
     rescue => e
@@ -15,6 +16,7 @@ class Admins::EndpointGroupsController < ApplicationController
   def show
     begin
       render json: {
+        status: 200,
         endpoint_group: EndpointGroupUpdateSerializer.new(@endpoint_group).serializable_hash[:data][:attributes]
       }
     rescue => e
@@ -27,6 +29,7 @@ class Admins::EndpointGroupsController < ApplicationController
     begin
       if endpoint_group.save!
         render json: {
+          status: 200,
           endpoint_group: EndpointGroupSerializer.new(endpoint_group).serializable_hash[:data][:attributes]
         }
       end
@@ -40,6 +43,7 @@ class Admins::EndpointGroupsController < ApplicationController
     begin
       if @endpoint_group.update!(endpoint_group_params)
         render json: {
+          status: 200,
           endpoint_group: EndpointGroupSerializer.new(@endpoint_group).serializable_hash[:data][:attributes]
           }
       end
@@ -52,7 +56,7 @@ class Admins::EndpointGroupsController < ApplicationController
   def destroy
     begin
       render json: {
-          status: "you just destroyed! Endppoint Group",
+          status: 200,
           endppointGroup: @endpoint_group
         }
       @endpoint_group.destroy

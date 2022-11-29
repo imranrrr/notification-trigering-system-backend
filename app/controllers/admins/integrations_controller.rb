@@ -5,6 +5,7 @@ class Admins::IntegrationsController < ApplicationController
     begin
       @integrations = Integration.all
       render json:{
+        status: 200,
         integrations: IntegrationSerializer.new(@integrations).serializable_hash[:data].map{|data| data[:attributes]}
       }
     rescue => e
@@ -15,6 +16,7 @@ class Admins::IntegrationsController < ApplicationController
   def show
     begin
       render json: {
+          status: 200,
           integration: IntegrationSerializer.new(@integration).serializable_hash[:data][:attributes]
         }
     rescue => e
@@ -27,6 +29,7 @@ class Admins::IntegrationsController < ApplicationController
     begin
       if @integration.save!
         render json: {
+          status: 200,
           integration: IntegrationSerializer.new(@integration).serializable_hash[:data][:attributes]
         }
       end
@@ -39,6 +42,7 @@ class Admins::IntegrationsController < ApplicationController
     begin
       if @integration.update!(integration_params)
         render json: {
+          status: 200,
           integration: IntegrationSerializer.new(@integration).serializable_hash[:data][:attributes]
         }
       end
@@ -50,7 +54,7 @@ class Admins::IntegrationsController < ApplicationController
   def destroy
     begin
       render json: {
-        message: "you just deleted! Integration!",
+        status: 200,
         integration: @integration 
       }
       @integration.destroy

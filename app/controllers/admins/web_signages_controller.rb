@@ -5,6 +5,7 @@ class Admins::WebSignagesController < ApplicationController
     begin
       web_signages = WebSignage.all
       render json: {
+        status: 200,
         web_signages: WebSignageSerializer.new(web_signages).serializable_hash[:data].map{|data| data[:attributes]}
       }
     rescue => e
@@ -15,6 +16,7 @@ class Admins::WebSignagesController < ApplicationController
   def show
     begin
       render json: {
+        status: 200,
         web_signage: WebSignageSerializer.new(@web_signage).serializable_hash[:data][:attributes]
       }
     rescue => e
@@ -27,6 +29,7 @@ class Admins::WebSignagesController < ApplicationController
     begin
       if @web_signage.save!
         render json: {
+          status: 200,
           web_signage: WebSignageSerializer.new(@web_signage).serializable_hash[:data][:attributes]
         }
       end
@@ -39,6 +42,7 @@ class Admins::WebSignagesController < ApplicationController
     begin
       if @web_signage.update!(web_signage_params)
         render json: {
+          status: 200,
           web_signage: WebSignageSerializer.new(@web_signage).serializable_hash[:data][:attributes]
         }
       end
@@ -50,7 +54,7 @@ class Admins::WebSignagesController < ApplicationController
   def destroy
     begin
       render json: {
-        message: "you just destroyed! Websignage",
+        status: 200,
         web_signage: @web_signage
         }
       @web_signage.destroy

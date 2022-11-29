@@ -5,6 +5,7 @@ class Admins::EndpointsController < ApplicationController
     begin
       endpoints = Endpoint.all
       render json: {
+        status: 200,
         endpoints: EndpointSerializer.new(endpoints).serializable_hash[:data].map{|data| data[:attributes]}
       }
     rescue => e
@@ -15,6 +16,7 @@ class Admins::EndpointsController < ApplicationController
   def show
     begin
       render json: {
+        status: 200,
         endpoint: EndpointUpdateSerializer.new(@endpoint).serializable_hash[:data][:attributes]
       }
     rescue => e
@@ -34,6 +36,7 @@ class Admins::EndpointsController < ApplicationController
       end
       @endpoint.reload
       render json: {
+          status: 200,
           endpoint: EndpointSerializer.new(@endpoint).serializable_hash[:data][:attributes]
           }
     rescue => e
@@ -56,6 +59,7 @@ class Admins::EndpointsController < ApplicationController
         end
         @endpoint.reload
         render json: {
+              status: 200,
               endpoint: EndpointSerializer.new(@endpoint).serializable_hash[:data][:attributes]
             }
       end
@@ -70,7 +74,7 @@ class Admins::EndpointsController < ApplicationController
           @destination = Destination.find_by(id: @endpoint.destination_id)
           @destination.destroy!
           render json: {
-            message: "you just destroyed! Endpoint",
+            message: 200,
             endpoint: @endpoint
           }
       else

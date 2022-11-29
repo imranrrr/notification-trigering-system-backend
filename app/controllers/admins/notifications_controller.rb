@@ -5,6 +5,7 @@ class Admins::NotificationsController < ApplicationController
         begin
             notifications = Notification.all
             render json:  {
+                status: 200,
                 notifications: NotificationSerializer.new(notifications).serializable_hash[:data].map{|data| data[:attributes]}
             }
         rescue => e
@@ -15,6 +16,7 @@ class Admins::NotificationsController < ApplicationController
     def show
         begin
             render json:  {
+                status: 200,
                 notification: NotificationSerializer.new(@notification).serializable_hash[:data][:attributes]
             }
         rescue => e
@@ -44,7 +46,6 @@ class Admins::NotificationsController < ApplicationController
         begin
             render json: {
                 status: 200,
-                message: "You just Destroyed! Notification!",
                 notification: @notification
             }
             @notification.destroy

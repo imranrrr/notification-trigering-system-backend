@@ -10,6 +10,7 @@ class Admins::RegistrationsController < Devise::RegistrationsController
 
   def edit
     render json: {
+      status: 200,
       admin: current_admin
     }
   end

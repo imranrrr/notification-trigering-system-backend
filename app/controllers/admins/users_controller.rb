@@ -5,6 +5,7 @@ class Admins::UsersController < ApplicationController
         begin
             @users = User.all
             render json:{
+              status: 200,
               users: UserSerializer.new(@users).serializable_hash[:data].map{|data| data[:attributes]}
             }
           rescue => e
@@ -15,6 +16,7 @@ class Admins::UsersController < ApplicationController
     def show
         begin
             render json: {
+                status: 200,
                 user: UpdateUserSerializer.new(@user).serializable_hash[:data][:attributes]
                 }
         rescue => e
@@ -27,6 +29,7 @@ class Admins::UsersController < ApplicationController
         begin
           if @user.save!
             render json: {
+              status: 200,
               user: UserSerializer.new(@user).serializable_hash[:data][:attributes]
             }
           end
@@ -39,6 +42,7 @@ class Admins::UsersController < ApplicationController
         begin
             if @user.update!(user_params)
               render json: {
+                status: 200,
                 user: UserSerializer.new(@user).serializable_hash[:data][:attributes]
               }
             end
@@ -50,7 +54,7 @@ class Admins::UsersController < ApplicationController
     def destroy
         begin
             render json: {
-                message: "you just destroyed! User!",
+              status: 200,
                 user: @user
             }
             @user.destroy!

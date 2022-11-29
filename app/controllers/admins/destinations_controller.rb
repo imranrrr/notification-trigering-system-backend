@@ -5,6 +5,7 @@ class Admins::DestinationsController < ApplicationController
     begin
       destinations = Destination.all
       render json: {
+        status: 200,
         destinations: DestinationSerializer.new(destinations).serializable_hash[:data].map{|data| data[:attributes]}
         }
     rescue => e
@@ -15,6 +16,7 @@ class Admins::DestinationsController < ApplicationController
   def show
     begin
       render json: {
+        status: 200,
         destination: DestinationSerializer.new(@destination).serializable_hash[:data][:attributes]
       }
     rescue => e
@@ -27,7 +29,7 @@ class Admins::DestinationsController < ApplicationController
     begin
       if destination.save!
          render json: {
-           status: true,
+           status: 200,
            destination: DestinationSerializer.new(destination).serializable_hash[:data][:attributes]
            }
       end
@@ -40,7 +42,7 @@ class Admins::DestinationsController < ApplicationController
     begin 
         @destination.update!(destination_params)
         render json: {
-          status: true,
+          status: 200,
           destination: DestinationSerializer.new(@destination).serializable_hash[:data][:attributes]
         }
     rescue => e
@@ -51,7 +53,7 @@ class Admins::DestinationsController < ApplicationController
   def destroy
     begin
       render json: {
-          status: true,
+          status: 200,
           message: "you just deleted! Destination",
           destination: @destination
         }

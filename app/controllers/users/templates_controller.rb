@@ -6,6 +6,7 @@ class Users::TemplatesController < ApplicationController
     begin
       templates = Template.all.order("created_at DESC")
       render json: {
+          status: 200,
           templates: TemplateSerializer.new(templates).serializable_hash[:data].map{|data| data[:attributes]}
         }
     rescue => e
@@ -16,6 +17,7 @@ class Users::TemplatesController < ApplicationController
   def show
     begin
       render json: {
+        status: 200,
         template: TemplateSerializer.new(@template).serializable_hash[:data][:attributes]
       }
     rescue => e
@@ -28,6 +30,7 @@ class Users::TemplatesController < ApplicationController
     begin
       if @template.save!
         render json: {
+          status: 200,
           template: TemplateSerializer.new(@template).serializable_hash[:data][:attributes]
         }
       end
@@ -40,6 +43,7 @@ class Users::TemplatesController < ApplicationController
     begin
     if @template.update!(template_params)
        render json: {
+           status: 200,
            template: TemplateSerializer.new(@template).serializable_hash[:data][:attributes]
          }
     end
@@ -51,7 +55,7 @@ class Users::TemplatesController < ApplicationController
   def destroy
     begin
       render json: {
-        message: "you just destroyed! tmeplate.",
+        status: 200,
         template: @template
       }
       @template.destroy
