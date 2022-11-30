@@ -18,6 +18,15 @@ Rails.application.routes.draw do
     resources :integrations
     resources :users
     resources :notifications, only: %i[index show create destroy]
+    resources :transactions, only: %i[index show]
+    resources :packages, only: %i[index] do
+      member do
+        post :buy_package
+      end
+      collection do
+        post :redirect_request
+      end
+    end
   end
 
 
@@ -25,12 +34,11 @@ Rails.application.routes.draw do
     sessions: 'users/sessions',
     registrations: 'users/registrations'
   }
-
-  
-
   namespace :users do 
     resources :templates
     resources :notifications, only: %i[index show create destroy]
+    resources :subscriptions
+    resources :transactions, only: %i[index show]
   end
   # devise_scope :user do 
   #   post   'users/sign_up',  to: 'users/registrations#create'
