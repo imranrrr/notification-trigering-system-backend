@@ -65,6 +65,7 @@ class Admins::PackagesController < ApplicationController
          split_package_duration = package_duration.split(" ")
          duration_in_number = split_package_duration[0].to_i
          current_user.subscription.update!(status: 1, start_date: Time.now, end_date: Time.now + duration_in_number.month)
+         current_user.subscription.update(status: 1, start_date: Time.now, end_date: Time.now + duration_in_number.month)
          current_user.update(stripe_account_intent: payment_intent, paid: true)
        end
    
