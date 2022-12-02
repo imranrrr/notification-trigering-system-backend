@@ -8,7 +8,10 @@ class Admins::PackagesController < ApplicationController
     def index
         @packages = Package.all
         render json: 
-        {packages: @packages}
+        {
+          status: 200,
+          packages: @packages
+        }
     end
 
     def create
@@ -16,6 +19,7 @@ class Admins::PackagesController < ApplicationController
         package = Package.new(package_params)
         if package.save!
           render json: {
+            status: 200,
             package: package
           }
         end
@@ -45,6 +49,7 @@ class Admins::PackagesController < ApplicationController
               Subscription.create!(user_id: current_user.id, status: 0, package_id: @package.id)
         end
         render json: {
+          status: 200,
           clientSecret: clientSecret
         }
       rescue => e
