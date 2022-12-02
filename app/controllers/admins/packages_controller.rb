@@ -16,8 +16,10 @@ class Admins::PackagesController < ApplicationController
 
     def create
       begin 
+        byebug
         package = Package.new(package_params)
         if package.save!
+          package.update!(price: package_params[:price]*100) if package_params[:price].present?
           render json: {
             status: 200,
             package: package
@@ -85,6 +87,6 @@ class Admins::PackagesController < ApplicationController
     end
 
     def package_params
-      params.require(:package).permit(:name, :pirce, :duration)
+      params.require(:package).permit(:name, :price, :duration)
     end
 end

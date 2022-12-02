@@ -19,7 +19,7 @@ Rails.application.routes.draw do
     resources :users
     resources :notifications, only: %i[index show create destroy]
     resources :transactions, only: %i[index show]
-    resources :packages, only: %i[index] do
+    resources :packages, only: %i[index create] do
       member do
         post :buy_package
       end
