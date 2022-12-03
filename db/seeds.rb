@@ -8,3 +8,7 @@
 
 
 5.times {|i| WebSignage.create(name: "web signage #{i}")}
+
+Package.create!(name: "Silver", price: 20, duration: 0)
+Package.create!(name: "Gold", price: 40, duration: 1)
+Package.create!(name: "Premium", price: 60, duration: 2)
