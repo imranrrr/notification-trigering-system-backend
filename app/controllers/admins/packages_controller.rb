@@ -41,7 +41,10 @@ class Admins::PackagesController < ApplicationController
           },
         )
         clientSecret = payment_intent['client_secret']
-        current_user = User.find(3)
+        # .......... TESTING ..........
+        current_user = User.first
+        #........... TESTING ..........
+        
         subscription = current_user.subscription if current_user.subscription.present?
         if clientSecret && subscription
               subscription.update!(package_id: @package.id)
@@ -60,7 +63,9 @@ class Admins::PackagesController < ApplicationController
     end
 
     def redirect_request
-        current_user = User.find(3)
+      # ........ TESTING ...........
+        current_user = User.first
+      # ......... TESTING ..........
         stripe_data = params[:stripeParams].split('&')
         payment_intent = stripe_data[0].split('payment_intent=')[1]
         stripe_result = stripe_data[2].split('redirect_status=')[1]

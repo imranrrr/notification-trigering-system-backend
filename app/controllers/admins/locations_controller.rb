@@ -28,7 +28,6 @@ class Admins::LocationsController < ApplicationController
     location = Location.new(location_params)
     begin
       if location.save!
-        createXml = CreateXmlFileService.new(location).create_xml_file()
         render json: {
           status: 200,
           location: LocationSerializer.new(location).serializable_hash[:data][:attributes]
