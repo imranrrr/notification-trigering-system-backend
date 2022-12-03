@@ -8,7 +8,6 @@ class UserMailer < ApplicationMailer
     end
 
     def notification_email
-      byebug
         @user = params[:user]
         @url  = 'http://localhost:3001'
         mail(to: @user.email, subject: 'Notification Sent!')
