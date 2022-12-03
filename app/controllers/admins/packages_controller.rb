@@ -18,7 +18,6 @@ class Admins::PackagesController < ApplicationController
       begin 
         package = Package.new(package_params)
         if package.save!
-          package.update!(price: package_params[:price]*100) if package_params[:price].present?
           render json: {
             status: 200,
             package: package
