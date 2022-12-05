@@ -12,7 +12,6 @@ class Admins::CompaniesController < ApplicationController
   end
 
   def create
-    byebug
     @company = Company.new(company_params)
     if @company.save! && user_params.present?
       user = User.create!(user_params)
