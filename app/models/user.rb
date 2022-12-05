@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_many :notifications
   has_many :transactions
   has_one :subscription
+  has_one :company
   
   after_create :send_welcome_email
   
@@ -14,7 +15,8 @@ class User < ApplicationRecord
 
   enum role: {
     user: 0,
-    admin: 1
+    admin: 1,
+    super_user: 2
   }
 
   def jwt_payload
