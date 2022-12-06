@@ -33,6 +33,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_06_061557) do
     t.string "name"
     t.string "sub_domain"
     t.boolean "okta_sso_login", default: false
+    t.integer "status", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -169,6 +170,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_06_061557) do
     t.string "uid"
     t.boolean "paid", default: false
     t.string "stripe_account_intent"
+    t.integer "status", default: 0
     t.bigint "company_id"
     t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true

@@ -19,6 +19,11 @@ class User < ApplicationRecord
     super_user: 2
   }
 
+  enum status: {
+    inactive: 0,
+    active: 1
+  }
+
   def jwt_payload
     super
   end
