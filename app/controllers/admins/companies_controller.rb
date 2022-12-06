@@ -43,7 +43,7 @@ class Admins::CompaniesController < ApplicationController
       if @company.update!(company_params)
         render json: {
           status: 200,
-          company: Companyserializer.new(@company).serializable_hash[:data][:attributes]
+          company: CompanySerializer.new(@company).serializable_hash[:data][:attributes]
       }
       end
     rescue => e 
@@ -78,6 +78,6 @@ class Admins::CompaniesController < ApplicationController
     end
 
     def company_params
-      params.permit(:name, :sub_domain, :okta_sso_login, :logo)
+      params.permit(:name, :sub_domain, :okta_sso_login, :logo, :status)
     end
 end
