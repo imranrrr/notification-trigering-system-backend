@@ -17,7 +17,7 @@ class Admins::CompaniesController < ApplicationController
     begin
       render json: {
           status: 200,
-          company: CompanySerializer.new(@company).serializable_hash[:data][:attributes]
+          company: CompanyUpdateSerializer.new(@company).serializable_hash[:data][:attributes]
         }
       rescue => e
         render json: {status: 500, message: e.message}
