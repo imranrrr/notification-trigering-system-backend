@@ -3,7 +3,7 @@ class CreateCompanies < ActiveRecord::Migration[7.0]
     create_table :companies do |t|
       t.string :name
       t.string :sub_domain
-      t.references :user
+      t.boolean :okta_sso_login, default: false
 
       t.timestamps
     end

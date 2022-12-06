@@ -2,39 +2,62 @@ class Admins::CompaniesController < ApplicationController
   before_action :set_company, only: %i[ show update destroy ]
 
   def index
-    @companies = Company.all
-
-    render json: @companies
+    begin
+      @companies = Company.all
+      render json: {
+          status: 200,
+          companies: CompanySerializer.new(@companies).serializable_hash[:data].map{|data| data[:attributes]}
+        }
+    rescue => e
+      render json: {status: 500, message: e.message}
+    end
   end
 
   def show
-    render json: @company
+    begin
+      render json: {
+          status: 200,
+          company: CompanySerializer.new(@company).serializable_hash[:data][:attributes]
+        }
+      rescue => e
+        render json: {status: 500, message: e.message}
+      end
   end
 
   def create
-    @company = Company.new(company_params)
-    if @company.save! && user_params.present?
-      user = User.create!(user_params)
-     @company.update!(user_id: user.id)
-     @company.user.update!(role: 2)
-      render json: {
-        status: 200,
-        company: CompanySerializer.new(@company).serializable_hash[:data][:attributes]
-      }
+    begin
+      @company = Company.new(company_params)
+      if @company.save!
+        render json: {
+          status: 200,
+          company: CompanySerializer.new(@company).serializable_hash[:data][:attributes]
+        }
+      end
+    rescue => e 
+      render json: {status: 500, message: e.message}
     end
   end
 
   def update
-    if @company.update(company_params)
-      render json: @company
-    else
-      render json: @company.errors, status: :unprocessable_entity
+    begin
+      if @company.update!(company_params)
+        render json: {
+          status: 200,
+          company: Companyserializer.new(@company).serializable_hash[:data][:attributes]
+      }
+      end
+    rescue => e 
+      render json: {status: 500, message: e.message}
     end
   end
 
 
   def destroy
-    @company.destroy
+    begin
+      @company.destroy
+    rescue => e
+      render json: {status: 500, message: e.message}
+    end
   end
 
   private
@@ -43,10 +66,6 @@ class Admins::CompaniesController < ApplicationController
     end
 
     def company_params
-      params.require(:company).permit(:name, :sub_domain)
-    end
-
-    def user_params
-      params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation, role: 2)
+      params.require(:company).permit(:name, :sub_domain, :okta_sso_login)
     end
 end

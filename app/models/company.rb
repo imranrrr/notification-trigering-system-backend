@@ -1,3 +1,3 @@
 class Company < ApplicationRecord
-    belongs_to :user, optional: true, dependent: :destroy
+    has_many :users
 end
