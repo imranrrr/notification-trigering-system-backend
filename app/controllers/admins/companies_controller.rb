@@ -1,5 +1,5 @@
 class Admins::CompaniesController < ApplicationController
-  before_action :set_company, only: %i[ show update destroy ]
+  before_action :set_company, only: %i[ show update destroy company_users ]
 
   def index
     begin
@@ -55,6 +55,18 @@ class Admins::CompaniesController < ApplicationController
   def destroy
     begin
       @company.destroy
+    rescue => e
+      render json: {status: 500, message: e.message}
+    end
+  end
+
+  def company_users
+    begin
+      users = User.where(company_id: @company.id)
+      render json: {
+        status: 200,
+        users: UserSerializer.new(users).serializable_hash[:data].map{|data| data[:attributes]}
+      }
     rescue => e
       render json: {status: 500, message: e.message}
     end

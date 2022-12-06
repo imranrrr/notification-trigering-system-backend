@@ -18,7 +18,11 @@ Rails.application.routes.draw do
     resources :integrations
     resources :users
     resources :notifications, only: %i[index show create destroy]
-    resources :companies
+    resources :companies do 
+      member do 
+        get :company_users
+      end
+    end
     resources :transactions, only: %i[index show]
     resources :packages, only: %i[index create] do
       member do
