@@ -78,6 +78,6 @@ class Admins::CompaniesController < ApplicationController
     end
 
     def company_params
-      params.require(:company).permit(:name, :sub_domain, :okta_sso_login)
+      params.permit(:name, :sub_domain, :okta_sso_login, :logo)
     end
 end
