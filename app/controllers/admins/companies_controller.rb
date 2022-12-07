@@ -69,7 +69,7 @@ class Admins::CompaniesController < ApplicationController
       users = User.where(company_id: @company.id)
       render json: {
         status: 200,
-        users: UserSerializer.new(users).serializable_hash[:data].map{|data| data[:attributes]}
+        company_users: UserSerializer.new(users).serializable_hash[:data].map{|data| data[:attributes]}
       }
     rescue => e
       render json: {status: 500, message: e.message}
