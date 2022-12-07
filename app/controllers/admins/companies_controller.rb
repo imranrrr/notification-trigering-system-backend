@@ -55,6 +55,10 @@ class Admins::CompaniesController < ApplicationController
   def destroy
     begin
       @company.destroy
+      render json: {
+        status: 200,
+        company: @company 
+      }
     rescue => e
       render json: {status: 500, message: e.message}
     end
