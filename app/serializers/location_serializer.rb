@@ -1,6 +1,6 @@
 class LocationSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :id, :name, :web_signage_id, :description, :admin_id
+  attributes :id, :name, :web_signage_id, :description, :creator_id
 
   attribute :web_signage do |location|
     if location.web_signage.present?
