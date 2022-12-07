@@ -14,9 +14,9 @@ class User < ApplicationRecord
           :jwt_authenticatable, jwt_revocation_strategy: self
 
   enum role: {
-    user: 0,
-    admin: 1,
-    super_user: 2
+    "Notification User": 0,
+    "Administrator": 1,
+    "Super User": 2
   }
 
   enum status: {

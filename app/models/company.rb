@@ -1,5 +1,6 @@
 class Company < ApplicationRecord
     has_many :users
+    has_one :subscription
 
     mount_uploader :logo, CompanyLogoUploader
 

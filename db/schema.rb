@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_06_100839) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_07_095811) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -43,20 +43,22 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_06_100839) do
     t.integer "destination_type", default: 0
     t.string "resource_url"
     t.integer "network_distribution_id"
-    t.integer "admin_id"
+    t.integer "creator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["admin_id"], name: "index_destinations_on_admin_id"
+    t.integer "company_id"
+    t.index ["creator_id"], name: "index_destinations_on_creator_id"
   end
 
   create_table "endpoint_groups", force: :cascade do |t|
     t.string "name"
     t.string "description"
     t.integer "endpoint_type", default: 1
-    t.integer "admin_id"
+    t.integer "creator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["admin_id"], name: "index_endpoint_groups_on_admin_id"
+    t.integer "company_id"
+    t.index ["creator_id"], name: "index_endpoint_groups_on_creator_id"
   end
 
   create_table "endpoints", force: :cascade do |t|
@@ -65,10 +67,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_06_100839) do
     t.integer "location_id"
     t.integer "endpoint_group_id"
     t.integer "destination_id"
-    t.integer "admin_id"
+    t.integer "creator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["admin_id"], name: "index_endpoints_on_admin_id"
+    t.integer "company_id"
+    t.index ["creator_id"], name: "index_endpoints_on_creator_id"
     t.index ["destination_id"], name: "index_endpoints_on_destination_id"
     t.index ["endpoint_group_id"], name: "index_endpoints_on_endpoint_group_id"
     t.index ["location_id"], name: "index_endpoints_on_location_id"
@@ -92,12 +95,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_06_100839) do
 
   create_table "locations", force: :cascade do |t|
     t.string "name"
-    t.integer "admin_id"
+    t.integer "creator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "web_signage_id"
     t.string "description"
-    t.index ["admin_id"], name: "index_locations_on_admin_id"
+    t.integer "company_id"
+    t.index ["creator_id"], name: "index_locations_on_creator_id"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -203,6 +207,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_06_100839) do
     t.string "potrait_description_left"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "company_id"
+    t.integer "creator_id"
   end
 
 end

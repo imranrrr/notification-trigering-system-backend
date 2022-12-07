@@ -1,5 +1,6 @@
 class Destination < ApplicationRecord
     has_one :endpoint, dependent: :destroy
+    belongs_to :company
     validates :destination_type, :resource_url, :network_distribution_id, presence: true
 
     enum destination_type: {
