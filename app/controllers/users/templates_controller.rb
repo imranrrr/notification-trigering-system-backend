@@ -75,9 +75,9 @@ class Users::TemplatesController < ApplicationController
 
     def template_params
       if params[:audio].to_s.include? "UploadedFile"
-        params.permit(:id, :name, :subject, :body, :audio, :font_color, :user_id, :background_color, :admin_id )
+        params.permit(:id, :name, :subject, :body, :audio, :font_color, :background_color, :creator_id )
       else
-        params.permit(:id, :name, :subject, :body, :font_color, :user_id, :background_color, :admin_id )
+        params.permit(:id, :name, :subject, :body, :font_color, :background_color, :creator_id )
       end
     end
 end

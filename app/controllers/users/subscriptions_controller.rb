@@ -50,6 +50,6 @@ class SubscriptionsController < ApplicationController
     end
 
     def subscription_params
-        params.require(:subscription.permit(:status, :user_id, :package_id))
+        params.require(:subscription.permit(:status, :package_id, :company_id))
     end
 end

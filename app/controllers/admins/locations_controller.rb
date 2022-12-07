@@ -75,6 +75,6 @@ class Admins::LocationsController < ApplicationController
     end
 
     def location_params
-      params.require(:location).permit(:name, :web_signage_id, :description, :admin_id)
+      params.require(:location).permit(:name, :web_signage_id, :description, :creator_id, :company_id)
     end
 end

@@ -73,6 +73,6 @@ class Admins::DestinationsController < ApplicationController
     end
 
     def destination_params
-      params.require(:destination).permit(:destination_type, :resource_url, :network_distribution_id, :admin_id)
+      params.require(:destination).permit(:destination_type, :resource_url, :network_distribution_id, :creator_id, :company_id)
     end
 end

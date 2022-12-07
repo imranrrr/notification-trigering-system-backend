@@ -3,7 +3,8 @@ class User < ApplicationRecord
   has_many :templates
   has_many :notifications
   has_many :transactions
-  has_one :subscription
+  
+  belongs_to :company, optional: true
   
   after_create :send_welcome_email
   
@@ -13,8 +14,14 @@ class User < ApplicationRecord
           :jwt_authenticatable, jwt_revocation_strategy: self
 
   enum role: {
-    user: 0,
-    admin: 1
+    "Notification User": 0,
+    "Administrator": 1,
+    "Super User": 2
+  }
+
+  enum status: {
+    inactive: 0,
+    active: 1
   }
 
   def jwt_payload

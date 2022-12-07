@@ -9,4 +9,8 @@ class UpdateUserSerializer
   attribute :created_date do |user|
     user && user.created_at.strftime('%d/%m/%Y')
   end
+
+  attribute :company_name do |user|
+    user.company && user.company.name
+  end
 end

@@ -102,13 +102,13 @@ class Admins::EndpointsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def endpoint_params
-      params.require(:endpoint).permit(:name, :description, :location_id, :endpoint_group_id, :destination_id, :admin_id)
+      params.require(:endpoint).permit(:name, :description, :location_id, :endpoint_group_id, :destination_id, :creator_id, :company_id)
     end
 
     def destination_params
       begin
         if params[:destination].present?
-          params.require(:destination).permit(:destination_type, :resource_url, :network_distribution_id)
+          params.require(:destination).permit(:destination_type, :resource_url, :network_distribution_id, :creator_id, :company_id)
         end
       rescue => e
         render json: {status: 500, message: e.message}
