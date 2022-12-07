@@ -44,6 +44,7 @@ Rails.application.routes.draw do
     resources :notifications, only: %i[index show create destroy]
     resources :subscriptions
     resources :transactions, only: %i[index show]
+    resources :manage_users
   end
   # devise_scope :user do 
   #   post   'users/sign_up',  to: 'users/registrations#create'

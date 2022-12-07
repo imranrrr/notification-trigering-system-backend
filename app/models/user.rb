@@ -3,7 +3,7 @@ class User < ApplicationRecord
   has_many :templates
   has_many :notifications
   has_many :transactions
-  has_one :subscription
+  
   belongs_to :company, optional: true
   
   after_create :send_welcome_email

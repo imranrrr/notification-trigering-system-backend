@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_07_095811) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_07_121546) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -121,15 +121,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_07_095811) do
 
   create_table "subscriptions", force: :cascade do |t|
     t.integer "status"
-    t.bigint "user_id"
     t.bigint "package_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "start_date"
     t.datetime "end_date"
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_subscriptions_on_company_id"
     t.index ["package_id"], name: "index_subscriptions_on_package_id"
     t.index ["status"], name: "index_subscriptions_on_status"
-    t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
   create_table "templates", force: :cascade do |t|
@@ -138,13 +138,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_07_095811) do
     t.string "body"
     t.string "audio"
     t.string "background_color"
-    t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "font_color"
-    t.integer "admin_id"
-    t.index ["admin_id"], name: "index_templates_on_admin_id"
-    t.index ["user_id"], name: "index_templates_on_user_id"
+    t.integer "creator_id"
   end
 
   create_table "transactions", force: :cascade do |t|
@@ -211,4 +208,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_07_095811) do
     t.integer "creator_id"
   end
 
+  add_foreign_key "subscriptions", "companies"
 end

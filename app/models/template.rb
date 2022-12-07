@@ -1,6 +1,6 @@
 class Template < ApplicationRecord
-    belongs_to :user, optional: true, foreign_key: :user_id
-    belongs_to :admin, optional: true, foreign_key: :admin_id
+    belongs_to :user, foreign_key: :creator_id
+    belongs_to :admin, optional: true
     has_many :notifications
     mount_uploader :audio, TemplateAudioUploader
 

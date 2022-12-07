@@ -75,6 +75,6 @@ class Admins::EndpointGroupsController < ApplicationController
     end
 
     def endpoint_group_params
-      params.require(:endpoint_group).permit(:name, :description, :endpoint_type, :admin_id)
+      params.require(:endpoint_group).permit(:name, :description, :endpoint_type, :creator_id, :company_id)
     end
 end

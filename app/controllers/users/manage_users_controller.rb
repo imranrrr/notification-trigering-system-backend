@@ -1,4 +1,4 @@
-class Admins::UsersController < ApplicationController
+class Users::ManageUsersController < ApplicationController
     before_action :set_user, only: %i[show update destroy]
 
     def index
@@ -14,14 +14,14 @@ class Admins::UsersController < ApplicationController
     end
 
     def show
-        # begin
+        begin
             render json: {
                 status: 200,
-                user: UserSerializer.new(@user).serializable_hash[:data][:attributes]
+                user: UpdateUserSerializer.new(@user).serializable_hash[:data][:attributes]
                 }
-        # rescue => e
-        #     render json: {status: 500, message: e.message}
-        # end
+        rescue => e
+            render json: {status: 500, message: e.message}
+        end
     end
 
     def create
@@ -70,6 +70,6 @@ class Admins::UsersController < ApplicationController
     end
 
     def user_params
-        params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation, :role, :provider, :uid, :company_id, :status)
+        params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation, :role, :provider, :uid, :status)
     end
 end
