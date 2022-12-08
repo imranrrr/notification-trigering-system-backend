@@ -14,14 +14,14 @@ class Admins::UsersController < ApplicationController
     end
 
     def show
-        # begin
+        begin
             render json: {
                 status: 200,
-                user: UserSerializer.new(@user).serializable_hash[:data][:attributes]
+                user: UpdateUserSerializer.new(@user).serializable_hash[:data][:attributes]
                 }
-        # rescue => e
-        #     render json: {status: 500, message: e.message}
-        # end
+        rescue => e
+            render json: {status: 500, message: e.message}
+        end
     end
 
     def create
