@@ -45,6 +45,11 @@ Rails.application.routes.draw do
     resources :subscriptions
     resources :transactions, only: %i[index show]
     resources :manage_users
+    resources :locations
+    resources :destinations
+    resources :endpoint_groups
+    resources :web_signages
+    resources :endpoints
   end
   # devise_scope :user do 
   #   post   'users/sign_up',  to: 'users/registrations#create'

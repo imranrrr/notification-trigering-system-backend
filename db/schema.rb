@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_07_121546) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_08_102809) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -47,6 +47,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_07_121546) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "company_id"
+    t.integer "creator_type", default: 1
     t.index ["creator_id"], name: "index_destinations_on_creator_id"
   end
 
@@ -58,6 +59,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_07_121546) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "company_id"
+    t.integer "creator_type", default: 1
     t.index ["creator_id"], name: "index_endpoint_groups_on_creator_id"
   end
 
@@ -71,6 +73,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_07_121546) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "company_id"
+    t.integer "creator_type", default: 1
     t.index ["creator_id"], name: "index_endpoints_on_creator_id"
     t.index ["destination_id"], name: "index_endpoints_on_destination_id"
     t.index ["endpoint_group_id"], name: "index_endpoints_on_endpoint_group_id"
@@ -101,6 +104,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_07_121546) do
     t.integer "web_signage_id"
     t.string "description"
     t.integer "company_id"
+    t.integer "creator_type", default: 1
     t.index ["creator_id"], name: "index_locations_on_creator_id"
   end
 
@@ -142,6 +146,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_07_121546) do
     t.datetime "updated_at", null: false
     t.string "font_color"
     t.integer "creator_id"
+    t.integer "creator_type", default: 1
   end
 
   create_table "transactions", force: :cascade do |t|
@@ -206,6 +211,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_07_121546) do
     t.datetime "updated_at", null: false
     t.integer "company_id"
     t.integer "creator_id"
+    t.integer "creator_type", default: 1
   end
 
   add_foreign_key "subscriptions", "companies"

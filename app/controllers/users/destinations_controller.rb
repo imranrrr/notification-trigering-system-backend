@@ -1,4 +1,4 @@
-class Admins::DestinationsController < ApplicationController
+class Users::DestinationsController < ApplicationController
   before_action :set_destination, only: %i[ show update destroy ]
 
   def index

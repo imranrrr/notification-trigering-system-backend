@@ -1,4 +1,4 @@
-class Admins::WebSignagesController < ApplicationController
+class Users::WebSignagesController < ApplicationController
   before_action :set_web_signage, only: %i[ show update destroy ]
 
   def index

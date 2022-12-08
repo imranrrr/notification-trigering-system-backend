@@ -8,4 +8,8 @@ class Endpoint < ApplicationRecord
 
     validates :name, :location_id, :endpoint_group_id, :destination_id, presence: true
 
+    enum creator_type: {
+        default: 0,
+        user: 1
+    }
 end

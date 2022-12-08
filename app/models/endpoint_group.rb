@@ -9,5 +9,10 @@ class EndpointGroup < ApplicationRecord
          both: 1,
          audio: 2,
          text: 3,
+            }
+
+    enum creator_type: {
+        default: 0,
+        user: 1
         }
 end

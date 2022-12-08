@@ -1,6 +1,6 @@
 class DestinationSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :id, :destination_type, :resource_url, :network_distribution_id, :creator_id
+  attributes :id, :destination_type, :resource_url, :network_distribution_id, :creator_id, :creator_type
 
   attribute :created_at do |destination|
     destination.created_at && destination.created_at.strftime('%d/%m/%Y')

@@ -1,4 +1,4 @@
-class Admins::EndpointsController < ApplicationController
+class Users::EndpointsController < ApplicationController
   before_action :set_endpoint, only: %i[ show update destroy ]
 
   def index

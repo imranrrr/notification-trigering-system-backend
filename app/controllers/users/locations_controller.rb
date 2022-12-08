@@ -1,4 +1,4 @@
-class Admins::LocationsController < ApplicationController
+class Users::LocationsController < ApplicationController
   before_action :set_location, only: %i[ show update destroy ]
 
   def index

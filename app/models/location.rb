@@ -9,6 +9,11 @@ class Location < ApplicationRecord
     after_create :create_xml_file
     after_update :xml_file_update
     validates :name, presence: true
+
+    enum creator_type: {
+        default: 0,
+        user: 1
+    }
     
 
     def create_xml_file

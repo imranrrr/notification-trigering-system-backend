@@ -9,4 +9,9 @@ class Destination < ApplicationRecord
         "IC Mobile": 1,
         "Signage": 2
     }
+
+    enum creator_type: {
+        default: 0,
+        user: 1
+    }
 end
