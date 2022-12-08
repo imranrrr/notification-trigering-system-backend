@@ -6,6 +6,7 @@ class Admins::SessionsController < Devise::SessionsController
   private
 
   def respond_with(resource, _opts = {})
+    byebug
     render json: {
       status: {code: 200, message: 'Logged in sucessfully.'},
       data: AdminSerializer.new(resource).serializable_hash[:data][:attributes]
@@ -13,7 +14,8 @@ class Admins::SessionsController < Devise::SessionsController
   end
 
   def respond_to_on_destroy
-    if !current_admin
+    byebug
+    if current_admin
       render json: {
         status: 200,
         message: "logged out successfully"
