@@ -1,10 +1,10 @@
-class Users::ManageUsersController < ApplicationController
+class Users::ManageUsersController < Users::UsersApiController
     before_action :set_user, only: %i[show update destroy]
     before_action :authenticate_user!
 
     def index
         begin
-            @users = User.all
+            @users = User.where(company_id: current_company.id)
             render json:{
               status: 200,
               users: UserSerializer.new(@users).serializable_hash[:data].map{|data| data[:attributes]}
@@ -27,6 +27,7 @@ class Users::ManageUsersController < ApplicationController
 
     def create
         @user = User.new(user_params)
+        @user.company_id = current_company.id
         begin
           if @user.save!
             render json: {

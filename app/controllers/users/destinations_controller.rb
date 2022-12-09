@@ -1,10 +1,12 @@
-class Users::DestinationsController < ApplicationController
+class Users::DestinationsController < Users::UsersApiController
   before_action :set_destination, only: %i[ show update destroy ]
   before_action :authenticate_user!
 
   def index
     begin
-      destinations = Destination.all
+      default_destiantions = Destination.where(creator_type: 0)
+      user_destinations = Destination.where(company_id: current_company.id)
+      destinations = default_destiantions + user_destinations
       render json: {
         status: 200,
         destinations: DestinationSerializer.new(destinations).serializable_hash[:data].map{|data| data[:attributes]}
@@ -27,6 +29,9 @@ class Users::DestinationsController < ApplicationController
 
   def create
     destination = Destination.new(destination_params)
+    destination.company_id = current_company.id
+    destination.creator_id = current_user.id
+
     begin
       if destination.save!
          render json: {
@@ -74,6 +79,6 @@ class Users::DestinationsController < ApplicationController
     end
 
     def destination_params
-      params.require(:destination).permit(:destination_type, :resource_url, :network_distribution_id, :creator_id, :company_id, :creator_type)
+      params.require(:destination).permit(:destination_type, :resource_url, :network_distribution_id)
     end
 end

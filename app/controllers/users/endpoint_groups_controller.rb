@@ -1,10 +1,10 @@
-class Users::EndpointGroupsController < ApplicationController
+class Users::EndpointGroupsController < Users::UsersApiController
   before_action :set_endpoint_group, only: %i[ show update destroy ]
   before_action :authenticate_user!
 
   def index
     begin   
-      endpoint_groups = EndpointGroup.all
+      endpoint_groups = EndpointGroup.where(company_id: current_company.id)
       render json:{
         status: 200,
         endpoint_groups: EndpointGroupSerializer.new(endpoint_groups).serializable_hash[:data].map{|data| data[:attributes]}
@@ -27,6 +27,7 @@ class Users::EndpointGroupsController < ApplicationController
 
   def create
     endpoint_group = EndpointGroup.new(endpoint_group_params)
+    endpoint_group.company_id = current_company.id; endpoint_group.creator_id = current_user.id
     begin
       if endpoint_group.save!
         render json: {
@@ -39,7 +40,6 @@ class Users::EndpointGroupsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /endpoint_groups/1
   def update
     begin
       if @endpoint_group.update!(endpoint_group_params)

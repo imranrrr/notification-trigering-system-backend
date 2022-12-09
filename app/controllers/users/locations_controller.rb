@@ -1,10 +1,13 @@
-class Users::LocationsController < ApplicationController
+class Users::LocationsController < Users::UsersApiController
   before_action :set_location, only: %i[ show update destroy ]
   before_action :authenticate_user!
+  before_action :current_company
 
   def index
     begin
-      locations = Location.all
+      default_locations = Location.where(creator_type: 0)
+      user_locations = Location.where(company_id: current_company.id)
+      locations = default_locations + user_locations
       render json:{
         status: 200,
         locations: LocationSerializer.new(locations).serializable_hash[:data].map{|data| data[:attributes]}
@@ -27,6 +30,7 @@ class Users::LocationsController < ApplicationController
 
   def create
     location = Location.new(location_params)
+    location.creator_id = current_user.id; location.company_id = current_company.id
     begin
       if location.save!
         render json: {
@@ -76,6 +80,6 @@ class Users::LocationsController < ApplicationController
     end
 
     def location_params
-      params.require(:location).permit(:name, :web_signage_id, :description, :creator_id, :company_id, :creator_type)
+      params.require(:location).permit(:name, :web_signage_id, :description)
     end
 end

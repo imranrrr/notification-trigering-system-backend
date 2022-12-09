@@ -1,7 +1,8 @@
-class SubscriptionsController < ApplicationController
+class SubscriptionsController < Users::UsersApiController
 
     before_action :set_subscription, only: %i[show update destroy]
     before_action :authenticate_user!
+    before_action :current_company
 
     def index
         begin

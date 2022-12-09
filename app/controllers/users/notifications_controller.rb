@@ -1,6 +1,7 @@
-class Users::NotificationsController < ApplicationController
+class Users::NotificationsController < Users::UsersApiController
     before_action :set_notification, only: %i[ show destroy ]
     before_action :authenticate_user!
+    before_action :current_company
 
     def index
         begin

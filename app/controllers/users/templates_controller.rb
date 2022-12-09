@@ -1,11 +1,13 @@
-class Users::TemplatesController < ApplicationController
+class Users::TemplatesController < Users::UsersApiController
   before_action :set_template, only: %i[ show update destroy ]
   before_action :authenticate_user!
   respond_to :json
 
   def index
     begin
-      templates = Template.all.order("created_at DESC")
+      default_templates = Template.where(company_id: current_company.id).order("created_at DESC")
+      user_templates = Template.where(creator_type: 0).order("created_at DESC")
+      templates = default_templates + user_templates
       render json: {
           status: 200,
           templates: TemplateSerializer.new(templates).serializable_hash[:data].map{|data| data[:attributes]}
@@ -28,8 +30,10 @@ class Users::TemplatesController < ApplicationController
 
   def create
     @template = Template.new(template_params)
+    @template.company_id = current_company.id
+    @template.creator_id = current_user.id
     begin
-      if @template.save!
+      if  @template.save!
         render json: {
           status: 200,
           template: TemplateSerializer.new(@template).serializable_hash[:data][:attributes]
@@ -78,6 +82,6 @@ class Users::TemplatesController < ApplicationController
     end
 
     def template_params
-        params.permit(:id, :name, :subject, :body, :audio, :font_color, :background_color, :creator_id, :creator_type )
+        params.permit(:id, :name, :subject, :body, :audio, :font_color, :background_color )
     end
 end

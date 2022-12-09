@@ -1,10 +1,12 @@
-class Users::EndpointsController < ApplicationController
+class Users::EndpointsController < Users::UsersApiController
   before_action :set_endpoint, only: %i[ show update destroy ]
   before_action :authenticate_user!
 
   def index
     begin
-      endpoints = Endpoint.all
+      default_endpoints = Endpoint.where(creator_type: 0)
+      user_endpoints = Endpoint.where(company_id: current_company.id)
+      endpoints = default_endpoints + user_endpoints
       render json: {
         status: 200,
         endpoints: EndpointSerializer.new(endpoints).serializable_hash[:data].map{|data| data[:attributes]}
@@ -28,6 +30,7 @@ class Users::EndpointsController < ApplicationController
   # POST /endpoints
   def create
     @endpoint = Endpoint.create!(endpoint_params)
+    @endpoint.company_id = current_company.id; @endpoint.creator_id = current_user.id
     if destination_params.present?
       @destination = Destination.new(destination_params)
     end
@@ -103,13 +106,13 @@ class Users::EndpointsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def endpoint_params
-      params.require(:endpoint).permit(:name, :description, :location_id, :endpoint_group_id, :destination_id, :creator_id, :company_id, :creator_type)
+      params.require(:endpoint).permit(:name, :description, :location_id, :endpoint_group_id, :destination_id)
     end
 
     def destination_params
       begin
         if params[:destination].present?
-          params.require(:destination).permit(:destination_type, :resource_url, :network_distribution_id, :creator_id, :company_id, :creator_type)
+          params.require(:destination).permit(:destination_type, :resource_url, :network_distribution_id)
         end
       rescue => e
         render json: {status: 500, message: e.message}
