@@ -1,5 +1,6 @@
 class Users::TemplatesController < ApplicationController
   before_action :set_template, only: %i[ show update destroy ]
+  before_action :authenticate_user!
   respond_to :json
 
   def index
@@ -41,12 +42,15 @@ class Users::TemplatesController < ApplicationController
 
   def update
     begin
-    if @template.update!(template_params)
+      if template_params[:audio].present? && template_params[:audio].to_s.include?("Uploadedfile")
+          @template.update!(template_params)
+      else
+        @template.update!(template_params.except(:audio))
+      end
        render json: {
            status: 200,
            template: TemplateSerializer.new(@template).serializable_hash[:data][:attributes]
          }
-    end
     rescue => e
       render json: {status: 500, message: e.message}
     end
@@ -74,10 +78,6 @@ class Users::TemplatesController < ApplicationController
     end
 
     def template_params
-      if params[:audio].to_s.include? "UploadedFile"
         params.permit(:id, :name, :subject, :body, :audio, :font_color, :background_color, :creator_id, :creator_type )
-      else
-        params.permit(:id, :name, :subject, :body, :font_color, :background_color, :creator_id, :creator_type )
-      end
     end
 end

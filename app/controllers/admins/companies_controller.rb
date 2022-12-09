@@ -1,5 +1,6 @@
 class Admins::CompaniesController < ApplicationController
   before_action :set_company, only: %i[ show update destroy company_users ]
+  before_action :authenticate_admin!
 
   def index
     begin

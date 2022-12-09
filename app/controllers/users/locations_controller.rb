@@ -1,5 +1,6 @@
 class Users::LocationsController < ApplicationController
   before_action :set_location, only: %i[ show update destroy ]
+  before_action :authenticate_user!
 
   def index
     begin

@@ -3,7 +3,7 @@ class Location < ApplicationRecord
     require 'nokogiri'
 
     has_many :endpoints
-    belongs_to :web_signage, foreign_key: :web_signage_id
+    belongs_to :web_signage, optional: true, foreign_key: :web_signage_id
     belongs_to :company, optional: true
     belongs_to :user, foreign_key: :creator_id
     after_create :create_xml_file

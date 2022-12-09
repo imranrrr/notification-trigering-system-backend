@@ -1,5 +1,6 @@
 class Users::EndpointsController < ApplicationController
   before_action :set_endpoint, only: %i[ show update destroy ]
+  before_action :authenticate_user!
 
   def index
     begin
@@ -74,7 +75,7 @@ class Users::EndpointsController < ApplicationController
           @destination = Destination.find_by(id: @endpoint.destination_id)
           @destination.destroy!
           render json: {
-            message: 200,
+            status: 200,
             endpoint: @endpoint
           }
       else

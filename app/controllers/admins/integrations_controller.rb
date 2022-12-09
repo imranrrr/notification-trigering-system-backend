@@ -1,5 +1,6 @@
 class Admins::IntegrationsController < ApplicationController
   before_action :set_integration, only: %i[ show update destroy ]
+  before_action :authenticate_admin!
 
   def index
     begin

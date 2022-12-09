@@ -1,5 +1,6 @@
 class Users::NotificationsController < ApplicationController
     before_action :set_notification, only: %i[ show destroy ]
+    before_action :authenticate_user!
 
     def index
         begin

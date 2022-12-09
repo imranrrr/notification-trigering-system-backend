@@ -1,5 +1,6 @@
 class Admins::TemplatesController < ApplicationController
   before_action :set_template, only: %i[ show update destroy ]
+  before_action :authenticate_admin!
   respond_to :json
 
   def index
@@ -41,8 +42,12 @@ class Admins::TemplatesController < ApplicationController
 
   def update
     begin
-    @template.update!(template_params)
-       render json: {
+      if template_params[:audio].present? && template_params[:audio].to_s.include?("UploadedFile")
+          @template.update!(template_params)
+      else
+          @template.update!(template_params.except(:audio))
+      end
+      render json: {
            status: 200,
            template: TemplateSerializer.new(@template).serializable_hash[:data][:attributes]
          }
@@ -73,10 +78,6 @@ class Admins::TemplatesController < ApplicationController
     end
 
     def template_params
-      if params[:audio].to_s.include? "UploadedFile"
-        params.permit(:id, :name, :subject, :body, :audio, :font_color, :background_color, :creator_id, :creator_type )
-      else
-        params.permit(:id, :name, :subject, :body, :font_color, :background_color, :creator_id )
-      end
+          params.permit(:id, :name, :subject, :body, :audio, :font_color, :background_color, :creator_id, :creator_type )
     end
 end

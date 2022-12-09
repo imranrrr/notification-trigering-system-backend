@@ -1,5 +1,6 @@
 class Users::DestinationsController < ApplicationController
   before_action :set_destination, only: %i[ show update destroy ]
+  before_action :authenticate_user!
 
   def index
     begin

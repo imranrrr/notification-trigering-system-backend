@@ -1,5 +1,6 @@
 class Users::WebSignagesController < ApplicationController
   before_action :set_web_signage, only: %i[ show update destroy ]
+  before_action :authenticate_user!
 
   def index
     begin

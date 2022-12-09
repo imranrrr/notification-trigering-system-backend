@@ -1,5 +1,6 @@
 class Admins::DestinationsController < ApplicationController
   before_action :set_destination, only: %i[ show update destroy ]
+  before_action :authenticate_admin!
 
   def index
     begin

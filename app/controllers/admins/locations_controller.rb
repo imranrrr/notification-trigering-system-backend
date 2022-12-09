@@ -1,5 +1,6 @@
 class Admins::LocationsController < ApplicationController
   before_action :set_location, only: %i[ show update destroy ]
+  before_action :authenticate_admin!
 
   def index
     begin

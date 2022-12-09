@@ -2,7 +2,7 @@ require 'stripe'
 require 'sinatra'
 
 class Admins::PackagesController < ApplicationController
-    # before_action :authenticate_user!, only: %i[buy_package]
+    before_action :authenticate_user!, only: %i[buy_package]
     before_action :set_package, only: %i[buy_package]
 
     def index
@@ -42,7 +42,7 @@ class Admins::PackagesController < ApplicationController
         )
         clientSecret = payment_intent['client_secret']
         # .......... TESTING ..........
-        current_user = User.first
+        # current_user = User.first
         #........... TESTING ..........
         
         subscription = current_user.subscription if current_user.subscription.present?
@@ -64,7 +64,7 @@ class Admins::PackagesController < ApplicationController
 
     def redirect_request
       # ........ TESTING ...........
-        current_user = User.first
+        # current_user = User.first
       # ......... TESTING ..........
         stripe_data = params[:stripeParams].split('&')
         payment_intent = stripe_data[0].split('payment_intent=')[1]

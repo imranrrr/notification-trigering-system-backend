@@ -1,5 +1,6 @@
 class Users::EndpointGroupsController < ApplicationController
   before_action :set_endpoint_group, only: %i[ show update destroy ]
+  before_action :authenticate_user!
 
   def index
     begin   
