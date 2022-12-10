@@ -5,8 +5,8 @@ class Users::TemplatesController < Users::UsersApiController
 
   def index
     begin
-      default_templates = Template.where(company_id: current_company.id).order("created_at DESC")
-      user_templates = Template.where(creator_type: 0).order("created_at DESC")
+      default_templates = Template.where(creator_type: 0).order("created_at DESC")
+      user_templates = Template.where(company_id: current_company.id, creator_type: 1).order("created_at DESC")
       templates = default_templates + user_templates
       render json: {
           status: 200,

@@ -5,7 +5,7 @@ class Users::DestinationsController < Users::UsersApiController
   def index
     begin
       default_destiantions = Destination.where(creator_type: 0)
-      user_destinations = Destination.where(company_id: current_company.id)
+      user_destinations = Destination.where(company_id: current_company.id, creator_type: 1)
       destinations = default_destiantions + user_destinations
       render json: {
         status: 200,

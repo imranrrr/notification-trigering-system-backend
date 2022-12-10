@@ -1,12 +1,11 @@
 class Users::LocationsController < Users::UsersApiController
   before_action :set_location, only: %i[ show update destroy ]
   before_action :authenticate_user!
-  before_action :current_company
 
   def index
     begin
       default_locations = Location.where(creator_type: 0)
-      user_locations = Location.where(company_id: current_company.id)
+      user_locations = Location.where(company_id: current_company.id, creator_type: 1)
       locations = default_locations + user_locations
       render json:{
         status: 200,

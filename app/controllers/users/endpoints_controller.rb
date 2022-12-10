@@ -5,7 +5,7 @@ class Users::EndpointsController < Users::UsersApiController
   def index
     begin
       default_endpoints = Endpoint.where(creator_type: 0)
-      user_endpoints = Endpoint.where(company_id: current_company.id)
+      user_endpoints = Endpoint.where(company_id: current_company.id, creator_type: 1)
       endpoints = default_endpoints + user_endpoints
       render json: {
         status: 200,

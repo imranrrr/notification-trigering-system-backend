@@ -1,11 +1,9 @@
 class Users::NotificationsController < Users::UsersApiController
     before_action :set_notification, only: %i[ show destroy ]
     before_action :authenticate_user!
-    before_action :current_company
-
     def index
         begin
-            notifications = Notification.all
+            notifications = Notification.where(company_id: current_company.id, creator_id: current_user.id)
             render json:  {
                 status: 200,
                 notifications: NotificationSerializer.new(notifications).serializable_hash[:data].map{|data| data[:attributes]}
@@ -31,7 +29,7 @@ class Users::NotificationsController < Users::UsersApiController
     begin
         if endpoint_ids.length > 0
             endpoint_ids.each do |endpoint_id|
-                notification = Notification.create!(template_id: notification_params[:template_id], endpoint_id: endpoint_id, user_id: notification_params[:user_id], admin_id: notification_params[:admin_id]) 
+                notification = Notification.create!(template_id: notification_params[:template_id], endpoint_id: endpoint_id, creator_id: current_user.id, company_id: current_company.id ) 
             end
             render json: {
                 status: 200,
@@ -62,7 +60,7 @@ class Users::NotificationsController < Users::UsersApiController
     end
 
     def notification_params
-      params.require(:notification).permit(:template_id, :admin_id, :user_id, :endpoint_ids => [] )
+      params.require(:notification).permit(:template_id, :endpoint_ids => [] )
     end
 
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_09_143628) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_10_055557) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -112,9 +112,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_09_143628) do
     t.integer "template_id"
     t.integer "endpoint_id"
     t.integer "admin_id"
-    t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "company_id"
+    t.integer "creator_id"
+    t.index ["company_id"], name: "index_notifications_on_company_id"
   end
 
   create_table "packages", force: :cascade do |t|
@@ -216,6 +218,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_09_143628) do
     t.integer "creator_type", default: 1
   end
 
+  add_foreign_key "notifications", "companies"
   add_foreign_key "subscriptions", "companies"
   add_foreign_key "templates", "companies"
 end

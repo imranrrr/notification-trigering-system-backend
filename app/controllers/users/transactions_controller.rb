@@ -1,6 +1,5 @@
 class Users::TransactionsController < Users::UsersApiController
     before_action :authenticate_user!
-    before_action :current_company
     before_action :set_transaction, only: %i[show]
 
     def index
