@@ -6,14 +6,17 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
+pp Company.create!(name: "Sam's Company", sub_domain: "dev")
+pp Company.create!(name: "Dev's Company", sub_domain: "blog")
+pp Company.create!(name: "Fred's Company", sub_domain: "spot")
 
-pp Admin.create!(name: "Admin", email: "emranlateef786@gmail.com", password: "Admin@123", password_confirmation: "Admin@123" )
-pp User.create!(first_name: "Dummy", last_name: "User", email: "emranlateef786@gmail.com", password: "User@123", password_confirmation: "User@123")
+pp Admin.create!(name: "Admin", email: "emranlateef786@gmail.com", password: "Admin@123", password_confirmation: "Admin@123")
+pp User.create!(first_name: "Dummy", last_name: "User", email: "emranlateef786@gmail.com", password: "User@123", password_confirmation: "User@123", company_id: 1, role: 2)
 
-pp 5.times {|i| WebSignage.create(name: "web signage #{i}", scroller_speed: 5, landscape_title_width: "5px", landscape_title_height: "5px", landscape_title_top: "5px", landscape_title_left: "5px", landscape_description_width: "5px", landscape_description_height: "5px", landscape_description_top: "5px", landscape_description_left: "5px", potrait_title_width: "5px", potrait_title_height: "5px", potrait_title_top: "5px", potrait_title_left: "5px", potrait_description_width: "5px", potrait_description_height: "5px", potrait_description_top: "5px", potrait_description_left: "5px")}
+pp 5.times {|i| WebSignage.create(name: "web signage #{i}", scroller_speed: 5, landscape_title_width: "5px", landscape_title_height: "5px", landscape_title_top: "5px", landscape_title_left: "5px", landscape_description_width: "5px", landscape_description_height: "5px", landscape_description_top: "5px", landscape_description_left: "5px", potrait_title_width: "5px", potrait_title_height: "5px", potrait_title_top: "5px", potrait_title_left: "5px", potrait_description_width: "5px", potrait_description_height: "5px", potrait_description_top: "5px", potrait_description_left: "5px", creator_id: 1)}
 
-pp Location.create!(name: "Test Location", web_signage_id: WebSignage.first.id)
-pp Location.create!(name: "Test Location 2", web_signage_id: WebSignage.last.id)
+pp Location.create!(name: "Test Location", web_signage_id: WebSignage.first.id, creator_id: 1)
+pp Location.create!(name: "Test Location 2", web_signage_id: WebSignage.last.id, creator_id: 1)
 
 pp EndpointGroup.create!(name: "Test End Point Group", description: "testing description", endpoint_type: 2)
 pp EndpointGroup.create!(name: "Test End Point Group 2", description: "testing description 2", endpoint_type: 2)
@@ -25,7 +28,7 @@ pp Endpoint.create!(name: "Test Endpoint", description: "test description for en
 pp Endpoint.create!(name: "Test Endpoint 2", description: "test description for endpoint 2", location_id: Location.second.id, endpoint_group_id: EndpointGroup.second.id, destination_id: Destination.second.id)
 
 
-pp Template.create!(name: "test template", body: "test body", subject: "test subject", user_id: User.first.id, background_color: "#000000", font_color: "#fff")
+pp Template.create!(name: "test template", body: "test body", subject: "test subject", creator_id: User.first.id, background_color: "#000000", font_color: "#fff")
 
 pp Package.create!(name: "Silver", price: 20, duration: 0)
 pp Package.create!(name: "Gold", price: 40, duration: 1)

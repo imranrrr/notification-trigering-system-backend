@@ -73,7 +73,7 @@ class Admins::EndpointsController < ApplicationController
   def destroy
     begin
           render json: {
-            message: 200,
+            status: 200,
             endpoint: @endpoint
           }
         @endpoint.destroy!

@@ -4,7 +4,6 @@ class Admins::TransactionsController < ApplicationController
 
     def index
         begin
-            # transactions = Transaction.where(user_id: current_user.id)
             transactions = Transaction.all
             render json: {
                 transactions: TransactionSerializer.new(transactions).serializable_hash[:data].map{|data| data[:attributes]}

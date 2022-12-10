@@ -56,7 +56,6 @@ class Admins::DestinationsController < ApplicationController
     begin
       render json: {
           status: 200,
-          message: "you just deleted! Destination",
           destination: @destination
         }
       @destination.destroy

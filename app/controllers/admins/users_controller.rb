@@ -56,7 +56,7 @@ class Admins::UsersController < ApplicationController
         begin
             render json: {
               status: 200,
-                user: @user
+              user: @user
             }
             @user.destroy!
         rescue => e

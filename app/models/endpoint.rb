@@ -6,7 +6,7 @@ class Endpoint < ApplicationRecord
     belongs_to :company, optional: true
     belongs_to :user, foreign_key: :creator_id, optional: true
 
-    validates :name, :location_id, :endpoint_group_id, :destination_id, presence: true
+    # validates :name, :location_id, :endpoint_group_id, :destination_id, presence: true
 
     enum creator_type: {
         default: 0,
