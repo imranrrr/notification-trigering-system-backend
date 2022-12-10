@@ -5,7 +5,7 @@ class SubscriptionsController < Users::UsersApiController
 
     def index
         begin
-            subscriptions = Subscription.all
+            subscriptions = Subscription.find_by(company_id: current_company.id)
             render json: {
                 subscriptions: subscriptions
             }

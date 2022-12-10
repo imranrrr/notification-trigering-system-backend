@@ -4,7 +4,7 @@ class Users::WebSignagesController < Users::UsersApiController
 
   def index
     begin
-      user_web_signages = WebSignage.where(comnpany_id: current_company.id, creator_type: 1)
+      user_web_signages = WebSignage.where(company_id: current_company.id, creator_type: 1)
       default_web_signages = WebSignage.where(creator_type: 0)
       web_signages = user_web_signages + default_web_signages
       render json: {

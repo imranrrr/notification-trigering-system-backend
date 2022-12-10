@@ -33,6 +33,7 @@ class Users::EndpointsController < Users::UsersApiController
     @endpoint.company_id = current_company.id; @endpoint.creator_id = current_user.id
     if destination_params.present?
       @destination = Destination.new(destination_params)
+      @destination.company_id = current_company.id; @destination.creator_id = current_user.id;
     end
     begin
       if  @destination.present? && @destination.save!
@@ -57,6 +58,7 @@ class Users::EndpointsController < Users::UsersApiController
           existing_destination.update!(destination_params)
         elsif destination_params.present?
           destination = Destination.new(destination_params)
+          destination.company_id = current_company.id; destination.creator_id = current_user.id;
           if destination.save!
             @endpoint.update!(destination_id: destination.id) 
           end
