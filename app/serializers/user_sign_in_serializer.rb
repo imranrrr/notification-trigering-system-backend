@@ -13,5 +13,5 @@ class UserSignInSerializer
         if user.company.subscription.present?
           {id: user.company.subscription.id, package_name: user.company.subscription.package.name, start_date: user.company.subscription.start_date.strftime('%d/%m/%Y'), end_date: useruser.company.subscription.end_date.strftime('%d/%m/%Y'), subscription_duration: user.company.subscription.package.duration, package_price: user.company.subscription.package.price/100 }
         end
-      end
+    end
 end
