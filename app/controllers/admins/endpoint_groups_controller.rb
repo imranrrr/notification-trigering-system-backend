@@ -27,6 +27,7 @@ class Admins::EndpointGroupsController < ApplicationController
 
   def create
     endpoint_group = EndpointGroup.new(endpoint_group_params)
+    endpoint_group.creator_id = current_admin.id; endpoint_group.creator_type = 0
     begin
       if endpoint_group.save!
         render json: {
@@ -39,7 +40,6 @@ class Admins::EndpointGroupsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /endpoint_groups/1
   def update
     begin
       if @endpoint_group.update!(endpoint_group_params)
@@ -53,7 +53,6 @@ class Admins::EndpointGroupsController < ApplicationController
     end
   end
 
-  # DELETE /endpoint_groups/1
   def destroy
     begin
       render json: {
@@ -76,6 +75,6 @@ class Admins::EndpointGroupsController < ApplicationController
     end
 
     def endpoint_group_params
-      params.require(:endpoint_group).permit(:name, :description, :endpoint_type, :creator_id, :company_id, :creator_type)
+      params.require(:endpoint_group).permit(:name, :description, :endpoint_type )
     end
 end

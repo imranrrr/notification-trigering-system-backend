@@ -27,6 +27,7 @@ class Admins::LocationsController < ApplicationController
 
   def create
     location = Location.new(location_params)
+    location.creator_id = current_admin.id; location.creator_type = 0
     begin
       if location.save!
         render json: {
@@ -76,6 +77,6 @@ class Admins::LocationsController < ApplicationController
     end
 
     def location_params
-      params.require(:location).permit(:name, :web_signage_id, :description, :creator_id, :company_id, :creator_type)
+      params.require(:location).permit(:name, :web_signage_id, :description)
     end
 end

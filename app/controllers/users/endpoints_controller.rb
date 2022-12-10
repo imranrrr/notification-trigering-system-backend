@@ -29,9 +29,9 @@ class Users::EndpointsController < Users::UsersApiController
 
   # POST /endpoints
   def create
-    @endpoint = Endpoint.create!(endpoint_params)
+    @endpoint = Endpoint.new(endpoint_params)
     @endpoint.company_id = current_company.id; @endpoint.creator_id = current_user.id
-    if destination_params.present?
+    if @endpoint.save! && destination_params.present?
       @destination = Destination.new(destination_params)
       @destination.company_id = current_company.id; @destination.creator_id = current_user.id;
     end
@@ -76,14 +76,10 @@ class Users::EndpointsController < Users::UsersApiController
 
   def destroy
     begin
-      if  @endpoint.destination.present?
-          @destination = Destination.find_by(id: @endpoint.destination_id)
-          @destination.destroy!
           render json: {
             status: 200,
             endpoint: @endpoint
           }
-      else
         @endpoint.destroy!
       end
     rescue => e

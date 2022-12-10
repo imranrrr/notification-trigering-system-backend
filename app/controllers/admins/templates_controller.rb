@@ -28,6 +28,7 @@ class Admins::TemplatesController < ApplicationController
 
   def create
     @template = Template.new(template_params)
+    @template.creator_id = current_admin.id; @template.creator_type = 0
     begin
       if @template.save!
         render json: {
@@ -78,6 +79,6 @@ class Admins::TemplatesController < ApplicationController
     end
 
     def template_params
-          params.permit(:id, :name, :subject, :body, :audio, :font_color, :background_color, :creator_id, :creator_type )
+          params.permit(:id, :name, :subject, :body, :audio, :font_color, :background_color)
     end
 end

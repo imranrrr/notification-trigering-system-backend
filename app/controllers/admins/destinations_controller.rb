@@ -27,6 +27,7 @@ class Admins::DestinationsController < ApplicationController
 
   def create
     destination = Destination.new(destination_params)
+    destination.creator_id = current_admin.id; destination.creator_type = 0;
     begin
       if destination.save!
          render json: {
@@ -74,6 +75,6 @@ class Admins::DestinationsController < ApplicationController
     end
 
     def destination_params
-      params.require(:destination).permit(:destination_type, :resource_url, :network_distribution_id, :creator_id, :company_id, :creator_type)
+      params.require(:destination).permit(:destination_type, :resource_url, :network_distribution_id)
     end
 end

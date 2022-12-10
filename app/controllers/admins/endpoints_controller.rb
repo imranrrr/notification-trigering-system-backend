@@ -25,11 +25,12 @@ class Admins::EndpointsController < ApplicationController
     end
   end
 
-  # POST /endpoints
   def create
-    @endpoint = Endpoint.create!(endpoint_params)
-    if destination_params.present?
-      @destination = Destination.new(destination_params)
+    @endpoint = Endpoint.new(endpoint_params)
+    @endpoint.creator_id = current_admin.id; @endpoint.creator_type = 0
+    if @endpoint.save! && destination_params.present?
+        @destination = Destination.new(destination_params)
+        @destination.creator_id = current_admin.id; @destination.creator_type = 0
     end
     begin
       if  @destination.present? && @destination.save!
@@ -45,7 +46,6 @@ class Admins::EndpointsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /endpoints/1
   def update
     begin
       if @endpoint.update!(endpoint_params)
@@ -54,6 +54,7 @@ class Admins::EndpointsController < ApplicationController
           existing_destination.update!(destination_params)
         elsif destination_params.present?
           destination = Destination.new(destination_params)
+          destination.creator_id = current_admin.id; destination.creator_type = 0
           if destination.save!
             @endpoint.update!(destination_id: destination.id) 
           end
@@ -71,16 +72,11 @@ class Admins::EndpointsController < ApplicationController
 
   def destroy
     begin
-      if  @endpoint.destination.present?
-          @destination = Destination.find_by(id: @endpoint.destination_id)
-          @destination.destroy!
           render json: {
             message: 200,
             endpoint: @endpoint
           }
-      else
         @endpoint.destroy!
-      end
     rescue => e
       render json: {status: 500, message: e.message}
     end
@@ -89,27 +85,20 @@ class Admins::EndpointsController < ApplicationController
   private
     def set_endpoint
       begin
-        action = params[:action]
-        if action == "update"
           @endpoint = Endpoint.find(params[:id])
-          # @endpoint = EndpointUpdateSerializer.new(endpoint).serializable_hash[:data][:attributes]
-        else
-          @endpoint = Endpoint.find(params[:id])
-        end
       rescue => e
         render json: {status: 500, message: e.message}
       end
     end
 
-    # Only allow a list of trusted parameters through.
     def endpoint_params
-      params.require(:endpoint).permit(:name, :description, :location_id, :endpoint_group_id, :destination_id, :creator_id, :company_id, :creator_type)
+      params.require(:endpoint).permit(:name, :description, :location_id, :endpoint_group_id, :destination_id)
     end
 
     def destination_params
       begin
         if params[:destination].present?
-          params.require(:destination).permit(:destination_type, :resource_url, :network_distribution_id, :creator_id, :company_id, :creator_type)
+          params.require(:destination).permit(:destination_type, :resource_url, :network_distribution_id)
         end
       rescue => e
         render json: {status: 500, message: e.message}
