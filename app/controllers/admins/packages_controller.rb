@@ -64,11 +64,7 @@ class Admins::PackagesController < ApplicationController
         stripe_result = stripe_data[2].split('redirect_status=')[1]
 
        if stripe_result == 'succeeded'
-         package_duration = current_user.subscription.package.duration
-         split_package_duration = package_duration.split(" ")
-         duration_in_number = split_package_duration[0].to_i
-         current_user.subscription.update!(status: 1, start_date: Time.now, end_date: Time.now + duration_in_number.month)
-         current_user.subscription.update(status: 1, start_date: Time.now, end_date: Time.now + duration_in_number.month)
+         Subscription.set_subscription_duration()
          current_user.update(stripe_account_intent: payment_intent, paid: true)
        end
    

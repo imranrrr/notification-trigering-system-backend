@@ -28,7 +28,7 @@ class Admins::TemplatesController < ApplicationController
 
   def create
     @template = Template.new(template_params)
-    @template.creator_id = current_admin.id; @template.creator_type = 0
+    @template.admin_id = current_admin.id; @template.creator_type = 0
     begin
       if @template.save!
         render json: {

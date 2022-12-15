@@ -4,9 +4,7 @@ class Users::WebSignagesController < Users::UsersApiController
 
   def index
     begin
-      user_web_signages = WebSignage.where(company_id: current_company.id, creator_type: 1)
-      default_web_signages = WebSignage.where(creator_type: 0)
-      web_signages = user_web_signages + default_web_signages
+      web_signages = WebSignage.where(company_id: current_company.id, creator_type: 1).and(WebSignage.where(creator_type: 0))
       render json: {
         status: 200,
         web_signages: WebSignageSerializer.new(web_signages).serializable_hash[:data].map{|data| data[:attributes]}

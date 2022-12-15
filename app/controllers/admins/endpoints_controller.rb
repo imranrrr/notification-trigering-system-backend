@@ -27,7 +27,7 @@ class Admins::EndpointsController < ApplicationController
 
   def create
     @endpoint = Endpoint.new(endpoint_params)
-    @endpoint.creator_id = current_admin.id; @endpoint.creator_type = 0
+    @endpoint.admin_id = current_admin.id; @endpoint.creator_type = 0
     if @endpoint.save! && destination_params.present?
         @destination = Destination.new(destination_params)
         @destination.creator_id = current_admin.id; @destination.creator_type = 0

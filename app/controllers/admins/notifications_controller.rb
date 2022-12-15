@@ -30,7 +30,7 @@ class Admins::NotificationsController < ApplicationController
         begin
             if endpoint_ids.length > 0
                 endpoint_ids.each do |endpoint_id|
-                    notification = Notification.create!(template_id: notification_params[:template_id], endpoint_id: endpoint_id, creator_id: current_admin.id) 
+                    notification = Notification.create!(template_id: notification_params[:template_id], endpoint_id: endpoint_id, admin_id: current_admin.id) 
                 end
                 render json: {
                     status: 200,

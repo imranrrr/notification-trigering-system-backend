@@ -27,7 +27,7 @@ class Admins::DestinationsController < ApplicationController
 
   def create
     destination = Destination.new(destination_params)
-    destination.creator_id = current_admin.id; destination.creator_type = 0;
+    destination.admin_id = current_admin.id; destination.creator_type = 0;
     begin
       if destination.save!
          render json: {

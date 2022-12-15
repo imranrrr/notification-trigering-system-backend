@@ -1,8 +1,12 @@
 class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
-  has_many :templates
-  has_many :notifications
-  has_many :transactions
+  has_many :templates, foreign_key: :creator_id
+  has_many :notifications, foreign_key: :creator_id
+  has_many :transactions, foreign_key: :creator_id
+  has_many :locations, foreign_key: :creator_id
+  has_many :endpoints, foreign_key: :creator_id
+  has_many :endpoint_groups, foreign_key: :creator_id
+  has_many :destinations, foreign_key: :creator_id
   
   belongs_to :company, optional: true
   

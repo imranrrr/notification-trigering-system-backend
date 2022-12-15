@@ -27,7 +27,7 @@ class Admins::WebSignagesController < ApplicationController
 
   def create
     @web_signage = WebSignage.new(web_signage_params)
-    @web_signage.creator_id = current_admin.id; @web_signage.creator_type = 0
+    @web_signage.admin_id = current_admin.id; @web_signage.creator_type = 0
     begin
       if @web_signage.save!
         render json: {

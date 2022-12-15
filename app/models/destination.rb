@@ -2,7 +2,7 @@ class Destination < ApplicationRecord
     has_one :endpoint
     belongs_to :company, optional: true
     validates :destination_type, :resource_url, :network_distribution_id, presence: true
-    belongs_to :user, foreign_key: :creator_id, optional: true
+    belongs_to :user, optional: true, foreign_key: :creator_id
 
     enum destination_type: {
         "nil": 0,

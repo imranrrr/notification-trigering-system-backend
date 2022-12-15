@@ -4,9 +4,7 @@ class Users::EndpointsController < Users::UsersApiController
 
   def index
     begin
-      default_endpoints = Endpoint.where(creator_type: 0)
-      user_endpoints = Endpoint.where(company_id: current_company.id, creator_type: 1)
-      endpoints = default_endpoints + user_endpoints
+      endpoints = Endpoint.where(creator_type: 0).and(Endpoint.where(company_id: current_company.id, creator_type: 1))
       render json: {
         status: 200,
         endpoints: EndpointSerializer.new(endpoints).serializable_hash[:data].map{|data| data[:attributes]}

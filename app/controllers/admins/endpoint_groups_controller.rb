@@ -27,7 +27,7 @@ class Admins::EndpointGroupsController < ApplicationController
 
   def create
     endpoint_group = EndpointGroup.new(endpoint_group_params)
-    endpoint_group.creator_id = current_admin.id; endpoint_group.creator_type = 0
+    endpoint_group.admin_id = current_admin.id; endpoint_group.creator_type = 0
     begin
       if endpoint_group.save!
         render json: {

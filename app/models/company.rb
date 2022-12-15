@@ -6,6 +6,7 @@ class Company < ApplicationRecord
     has_many :endpoints, dependent: :destroy
     has_many :destinations, dependent: :destroy
     has_many :web_signages, dependent: :destroy
+    has_many :templates
 
     mount_uploader :logo, CompanyLogoUploader
 

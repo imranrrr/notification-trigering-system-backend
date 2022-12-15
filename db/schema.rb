@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_15_114400) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_15_133720) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -37,6 +37,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_15_114400) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "logo"
+    t.bigint "admin_id"
+    t.index ["admin_id"], name: "index_companies_on_admin_id"
   end
 
   create_table "destinations", force: :cascade do |t|
@@ -48,6 +50,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_15_114400) do
     t.datetime "updated_at", null: false
     t.integer "company_id"
     t.integer "creator_type", default: 1
+    t.bigint "admin_id"
+    t.index ["admin_id"], name: "index_destinations_on_admin_id"
     t.index ["creator_id"], name: "index_destinations_on_creator_id"
   end
 
@@ -60,6 +64,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_15_114400) do
     t.datetime "updated_at", null: false
     t.integer "company_id"
     t.integer "creator_type", default: 1
+    t.bigint "admin_id"
+    t.index ["admin_id"], name: "index_endpoint_groups_on_admin_id"
     t.index ["creator_id"], name: "index_endpoint_groups_on_creator_id"
   end
 
@@ -74,6 +80,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_15_114400) do
     t.datetime "updated_at", null: false
     t.integer "company_id"
     t.integer "creator_type", default: 1
+    t.bigint "admin_id"
+    t.index ["admin_id"], name: "index_endpoints_on_admin_id"
     t.index ["creator_id"], name: "index_endpoints_on_creator_id"
     t.index ["destination_id"], name: "index_endpoints_on_destination_id"
     t.index ["endpoint_group_id"], name: "index_endpoints_on_endpoint_group_id"
@@ -105,6 +113,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_15_114400) do
     t.string "description"
     t.integer "company_id"
     t.integer "creator_type", default: 1
+    t.bigint "admin_id"
+    t.index ["admin_id"], name: "index_locations_on_admin_id"
     t.index ["creator_id"], name: "index_locations_on_creator_id"
   end
 
@@ -156,6 +166,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_15_114400) do
     t.integer "creator_id"
     t.integer "creator_type", default: 1
     t.bigint "company_id"
+    t.bigint "admin_id"
+    t.index ["admin_id"], name: "index_templates_on_admin_id"
     t.index ["company_id"], name: "index_templates_on_company_id"
     t.index ["creator_id"], name: "index_templates_on_creator_id"
   end
@@ -223,9 +235,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_15_114400) do
     t.integer "company_id"
     t.integer "creator_id"
     t.integer "creator_type", default: 1
+    t.bigint "admin_id"
+    t.index ["admin_id"], name: "index_web_signages_on_admin_id"
   end
 
+  add_foreign_key "companies", "admins"
+  add_foreign_key "destinations", "admins"
+  add_foreign_key "endpoint_groups", "admins"
+  add_foreign_key "endpoints", "admins"
+  add_foreign_key "locations", "admins"
   add_foreign_key "notifications", "companies"
   add_foreign_key "subscriptions", "companies"
+  add_foreign_key "templates", "admins"
   add_foreign_key "templates", "companies"
+  add_foreign_key "web_signages", "admins"
 end

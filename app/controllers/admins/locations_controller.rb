@@ -27,7 +27,7 @@ class Admins::LocationsController < ApplicationController
 
   def create
     location = Location.new(location_params)
-    location.creator_id = current_admin.id; location.creator_type = 0
+    location.admin_id = current_admin.id; location.creator_type = 0
     begin
       if location.save!
         render json: {

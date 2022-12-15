@@ -4,9 +4,7 @@ class Users::LocationsController < Users::UsersApiController
 
   def index
     begin
-      default_locations = Location.where(creator_type: 0)
-      user_locations = Location.where(company_id: current_company.id, creator_type: 1)
-      locations = default_locations + user_locations
+      locations = Location.where(creator_type: 0).and(Location.where(company_id: current_company.id, creator_type: 1))
       render json:{
         status: 200,
         locations: LocationSerializer.new(locations).serializable_hash[:data].map{|data| data[:attributes]}

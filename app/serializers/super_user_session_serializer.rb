@@ -17,9 +17,21 @@ class SuperUserSessionSerializer
         end
       end
 
+      attribute :locations_count do |user|
+        user.locations && user.locations.all.count
+      end
+
+      attribute :endpoints_count do |user|
+        user.endpoints && user.endpoints.all.count
+      end
+
+      attribute :endpoint_groups_count do |user|
+        user.endpoint_groups && user.endpoint_groups.all.count
+      end
+
     attribute :subscription do |user|
         if user.company.subscription.present?
-          {id: user.company.subscription.id, package_name: user.company.subscription.package.name, start_date: user.company.subscription.start_date.strftime('%d/%m/%Y'), end_date: useruser.company.subscription.end_date.strftime('%d/%m/%Y'), subscription_duration: user.company.subscription.package.duration, package_price: user.company.subscription.package.price/100, locations_limit: user.company.subscription.package.locations_creating_limit, endpoints_limit: user.company.subscription.package.endpoints_creating_limit, endpoint_groups_limit: user.company.subscription.package.endpoint_groups_creating_limit, users_limit: user.company.subscription.package.users_creating_limit }
+          {id: user.company.subscription.id, package_name: user.company.subscription.package.name, start_date: user.company.subscription.start_date.strftime('%d/%m/%Y'), end_date: user.company.subscription.end_date.strftime('%d/%m/%Y'), subscription_duration: user.company.subscription.package.duration, package_price: user.company.subscription.package.price/100, locations_limit: user.company.subscription.package.locations_creating_limit, endpoints_limit: user.company.subscription.package.endpoints_creating_limit, endpoint_groups_limit: user.company.subscription.package.endpoint_groups_creating_limit, users_limit: user.company.subscription.package.users_creating_limit }
         end
     end
 end

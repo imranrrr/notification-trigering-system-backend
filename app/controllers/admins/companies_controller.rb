@@ -28,6 +28,7 @@ class Admins::CompaniesController < ApplicationController
   def create
     begin
       @company = Company.new(company_params)
+      @company.admin_id = current_admin.id
       if @company.save!
         render json: {
           status: 200,
