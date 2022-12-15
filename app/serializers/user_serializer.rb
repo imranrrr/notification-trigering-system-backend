@@ -2,15 +2,9 @@ class UserSerializer
   include FastJsonapi::ObjectSerializer
   attributes :id, :email, :first_name, :last_name, :bypass_user, :role, :paid, :company_id, :status
 
-  attribute :company_id do |user|
-    user.company && user.company.id
-  end
-
-  attribute :user_count do |object|
-    if object.company.present? && object.company.users.present?
-      {
-        notification_users: object.company.users.where(role: 0).count, admins: object.company.users.where(role: 1).count
-      }
+  attribute :company do |user|
+    if user.company.present? 
+      { id: user.company.id, name: user.company.name, logo: user.company.logo} 
     end
   end
 

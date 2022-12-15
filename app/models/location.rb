@@ -5,7 +5,7 @@ class Location < ApplicationRecord
     has_many :endpoints
     belongs_to :web_signage, optional: true, foreign_key: :web_signage_id
     belongs_to :company, optional: true
-    belongs_to :user, foreign_key: :creator_id
+    belongs_to :user, foreign_key: :creator_id, optional: true
     after_create :create_xml_file
     after_update :xml_file_update
     validates :name, presence: true

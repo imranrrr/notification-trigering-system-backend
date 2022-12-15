@@ -1,6 +1,6 @@
 class NotificationSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :id, :template_id, :endpoint_id, :user_id, :admin_id
+  attributes :id, :template_id, :endpoint_id, :creator_id
 
   attribute :created_at do |notification|
     notification.created_at && notification.created_at.strftime("%d/%m/%Y")
@@ -15,12 +15,6 @@ class NotificationSerializer
   attribute :endpoint do |notification|
     if notification.endpoint.present?
       {id: notification.endpoint.id, name: notification.endpoint.name}
-    end
-  end
-
-  attribute :admin do |notification|
-    if notification.admin.present?
-      {id: notification.admin.id, name: notification.admin.email}
     end
   end
 

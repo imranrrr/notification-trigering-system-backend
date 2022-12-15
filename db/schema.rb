@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_10_055557) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_15_114400) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -123,6 +123,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_10_055557) do
     t.string "name"
     t.integer "price"
     t.integer "duration", default: 0
+    t.integer "locations_creating_limit"
+    t.integer "endpoints_creating_limit"
+    t.integer "endpoint_groups_creating_limit"
+    t.integer "users_creating_limit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "subscriptions", force: :cascade do |t|

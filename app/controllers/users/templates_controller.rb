@@ -5,8 +5,8 @@ class Users::TemplatesController < Users::UsersApiController
 
   def index
     begin
-      default_templates = Template.where(creator_type: 0).order("created_at DESC")
-      user_templates = Template.where(company_id: current_company.id, creator_type: 1).order("created_at DESC")
+      default_templates = Template.where(creator_type: 0)
+      user_templates = Template.where(company_id: current_company.id, creator_type: 1)
       templates = default_templates + user_templates
       render json: {
           status: 200,
@@ -46,7 +46,7 @@ class Users::TemplatesController < Users::UsersApiController
 
   def update
     begin
-      if template_params[:audio].present? && template_params[:audio].to_s.include?("Uploadedfile")
+      if template_params[:audio].present? && template_params[:audio].to_s.include?("UploadedFile")
           @template.update!(template_params)
       else
         @template.update!(template_params.except(:audio))

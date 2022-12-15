@@ -4,7 +4,7 @@ class Users::ManageUsersController < Users::UsersApiController
 
     def index
         begin
-            @users = User.where(company_id: current_company.id)
+            @users = User.where(company_id: current_company.id).and(User.where.not(role: "Super User"))
             render json:{
               status: 200,
               users: UserSerializer.new(@users).serializable_hash[:data].map{|data| data[:attributes]}

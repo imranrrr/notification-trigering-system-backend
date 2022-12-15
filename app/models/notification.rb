@@ -15,13 +15,21 @@ class Notification < ApplicationRecord
         end
     end
 
+    # def send_email
+    #     if self.user_id != nil
+    #         user = User.find_by(id: self.user_id)
+    #         UserMailer.with(user: user).notification_email.deliver_later if user.present?
+    #     elsif self.admin_id != nil
+    #         admin = Admin.find_by(id: self.admin_id)
+    #         AdminMailer.with(admin: admin).notification_email.deliver_later if admin.present?
+    #     end
+    # end
+
     def send_email
-        if self.user_id != nil
-            user = User.find_by(id: self.user_id)
-            UserMailer.with(user: user).notification_email.deliver_later if user.present?
-        elsif self.admin_id != nil
-            admin = Admin.find_by(id: self.admin_id)
-            AdminMailer.with(admin: admin).notification_email.deliver_later if admin.present?
+        if self.creator_id != nil
+          user = User.find_by(id: self.creator_id)
+          if user.present?
+            UserMailer.with(user: user).notification_email.deliver_later
+          end
         end
-    end
 end

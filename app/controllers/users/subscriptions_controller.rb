@@ -7,6 +7,7 @@ class SubscriptionsController < Users::UsersApiController
         begin
             subscriptions = Subscription.find_by(company_id: current_company.id)
             render json: {
+                status: 200,
                 subscriptions: subscriptions
             }
         rescue => e
@@ -17,6 +18,7 @@ class SubscriptionsController < Users::UsersApiController
     def show
         begin
         render json: {
+            status: 200,
             subscription: @subscription
         }
         rescue => e
@@ -28,6 +30,7 @@ class SubscriptionsController < Users::UsersApiController
         begin
             if @subscription.update!(subscription_params)
                render json: {
+                    status: 200,
                     subscription: @subscription
                  }
             end
