@@ -27,21 +27,25 @@ class Users::EndpointsController < Users::UsersApiController
 
   # POST /endpoints
   def create
-    @endpoint = Endpoint.new(endpoint_params)
-    @endpoint.company_id = current_company.id; @endpoint.creator_id = current_user.id
-    if @endpoint.save! && destination_params.present?
-      @destination = Destination.new(destination_params)
-      @destination.company_id = current_company.id; @destination.creator_id = current_user.id;
-    end
     begin
-      if  @destination.present? && @destination.save!
-          @endpoint.update!(destination_id: @destination.id)
+      if !(check_subscription_limit?)
+        @endpoint = Endpoint.new(endpoint_params)
+        @endpoint.company_id = current_company.id; @endpoint.creator_id = current_user.id
+        if @endpoint.save! && destination_params.present?
+          @destination = Destination.new(destination_params)
+          @destination.company_id = current_company.id; @destination.creator_id = current_user.id;
+        end
+          if  @destination.present? && @destination.save!
+              @endpoint.update!(destination_id: @destination.id)
+          end
+          @endpoint.reload
+          render json: {
+              status: 200,
+              endpoint: EndpointSerializer.new(@endpoint).serializable_hash[:data][:attributes]
+              }
+      else
+        render json: {status: 500, message: "You Have Reached Your Subscribed Endpoint Limit!"}
       end
-      @endpoint.reload
-      render json: {
-          status: 200,
-          endpoint: EndpointSerializer.new(@endpoint).serializable_hash[:data][:attributes]
-          }
     rescue => e
       render json: {status: 500, message: e.message}
     end
@@ -86,6 +90,15 @@ class Users::EndpointsController < Users::UsersApiController
   end
 
   private
+
+  def check_subscription_limit?
+    if current_company.subscription.present?
+      endpointsCount = current_company.endpoint
+      endpointsLimit =  current_company.subscription.package.endpoints_creating_limit
+    !(endpointsCount >= endpointsLimit)
+    end
+  end
+
     def set_endpoint
       begin
         action = params[:action]

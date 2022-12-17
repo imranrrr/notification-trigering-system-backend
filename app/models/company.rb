@@ -14,4 +14,9 @@ class Company < ApplicationRecord
         inactive: 0,
         active: 1
     }
+
+    enum paid: {
+        unpaid: 0,
+        paid: 1
+    }
 end

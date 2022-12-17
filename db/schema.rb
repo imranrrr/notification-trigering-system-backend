@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_15_133720) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_17_114803) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -38,6 +38,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_15_133720) do
     t.datetime "updated_at", null: false
     t.string "logo"
     t.bigint "admin_id"
+    t.integer "paid", default: 0
+    t.string "stripe_account_intent"
     t.index ["admin_id"], name: "index_companies_on_admin_id"
   end
 
@@ -142,7 +144,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_15_133720) do
   end
 
   create_table "subscriptions", force: :cascade do |t|
-    t.integer "status"
+    t.integer "status", default: 0
     t.bigint "package_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -198,8 +200,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_15_133720) do
     t.boolean "bypass_user", default: false
     t.string "provider"
     t.string "uid"
-    t.boolean "paid", default: false
-    t.string "stripe_account_intent"
     t.integer "status", default: 0
     t.bigint "company_id"
     t.index ["company_id"], name: "index_users_on_company_id"
@@ -207,7 +207,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_15_133720) do
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["provider"], name: "index_users_on_provider"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["stripe_account_intent"], name: "index_users_on_stripe_account_intent"
     t.index ["uid"], name: "index_users_on_uid"
   end
 

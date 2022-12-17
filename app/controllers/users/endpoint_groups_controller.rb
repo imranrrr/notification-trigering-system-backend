@@ -26,18 +26,22 @@ class Users::EndpointGroupsController < Users::UsersApiController
   end
 
   def create
-    endpoint_group = EndpointGroup.new(endpoint_group_params)
-    endpoint_group.company_id = current_company.id; endpoint_group.creator_id = current_user.id
     begin
-      if endpoint_group.save!
-        render json: {
-          status: 200,
-          endpoint_group: EndpointGroupSerializer.new(endpoint_group).serializable_hash[:data][:attributes]
-        }
+      if check_subscription_limit?
+        endpoint_group = EndpointGroup.new(endpoint_group_params)
+        endpoint_group.company_id = current_company.id; endpoint_group.creator_id = current_user.id
+        if endpoint_group.save!
+          render json: {
+            status: 200,
+            endpoint_group: EndpointGroupSerializer.new(endpoint_group).serializable_hash[:data][:attributes]
+          }
+        end
+      else
+        render json: {status: 500, message: "You Have Reached Your Endpoint Groups Limit!"}
       end
-    rescue => e
-      render json: {status: 500, message: e.message}
-    end
+  rescue => e
+    render json: {status: 500, message: e.message}
+  end
   end
 
   def update
@@ -67,6 +71,14 @@ class Users::EndpointGroupsController < Users::UsersApiController
   end
 
   private
+
+    def check_subscription_limit?
+      if current_company.subscription.present?
+        endpointGroupsCount = current_company.endpoint_groups.count
+        endpointGroupsLimit = current_company.subscription.package.endpoint_groups_creating_liumit
+        !(endpointGroupsCount >=endpointGroupsLimit)
+      end
+    end
     def set_endpoint_group
       begin
           @endpoint_group = EndpointGroup.find(params[:id])

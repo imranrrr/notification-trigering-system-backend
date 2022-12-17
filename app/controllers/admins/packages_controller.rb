@@ -4,7 +4,7 @@ require 'sinatra'
 class Admins::PackagesController < ApplicationController
     before_action :authenticate_user!, only: %i[buy_package]
     before_action :set_package, only: %i[buy_package]
-
+   
     def index
         @packages = Package.all
         render json: 
@@ -41,11 +41,11 @@ class Admins::PackagesController < ApplicationController
           },
         )
         clientSecret = payment_intent['client_secret']
-        subscription = current_company.subscription if current_company.subscription.present?
+        subscription = current_user.company.subscription if current_user.company.subscription.present?
         if clientSecret && subscription
               subscription.update!(package_id: @package.id)
         elsif clientSecret
-              Subscription.create!(company_id: current_company.id, status: 0, package_id: @package.id)
+              Subscription.create!(company_id: current_user.company.id, status: 1, package_id: @package.id)
         end
         render json: {
           status: 200,
@@ -62,10 +62,13 @@ class Admins::PackagesController < ApplicationController
         stripe_data = params[:stripeParams].split('&')
         payment_intent = stripe_data[0].split('payment_intent=')[1]
         stripe_result = stripe_data[2].split('redirect_status=')[1]
+        # payment_intent = 'pi_3MG1sUFgUyec9R6615vmZp6L'
+        # stripe_result = 'succeeded'
 
        if stripe_result == 'succeeded'
-         Subscription.set_subscription_duration()
-         current_user.update(stripe_account_intent: payment_intent, paid: true)
+         subscription = current_user.company.subscription
+         Subscription.set_subscription_duration(subscription)
+         current_user.company.update(stripe_account_intent: payment_intent, paid: 1)
        end
    
        render json: {status: 200, user: current_user.reload}
@@ -73,7 +76,7 @@ class Admins::PackagesController < ApplicationController
     end
 
     private 
-     
+
     def set_package
         @package = Package.find_by(id: params[:id])
     end

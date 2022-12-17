@@ -26,14 +26,19 @@ class Users::LocationsController < Users::UsersApiController
   end
 
   def create
-    location = Location.new(location_params)
-    location.creator_id = current_user.id; location.company_id = current_company.id
     begin
-      if location.save!
-        render json: {
-          status: 200,
-          location: LocationSerializer.new(location).serializable_hash[:data][:attributes]
-        }
+      if check_subscription_limit?
+        location = Location.new(location_params)
+        location.creator_id = current_user.id; location.company_id = current_company.id
+        
+          if location.save!
+            render json: {
+              status: 200,
+              location: LocationSerializer.new(location).serializable_hash[:data][:attributes]
+            }
+          end
+      else
+        render json: {status: 500, message: "You have Reached Your Subscribed Locations Limit!"}
       end
     rescue => e
       render json: {status: 500, message: e.message}
@@ -68,6 +73,15 @@ class Users::LocationsController < Users::UsersApiController
   end
 
   private
+
+    def check_subscription_limit?
+      if current_company.subscription.present?
+        locationsCount = current_company.locations.count
+        locationsLimit = current_company.subscription.package.locations_creating_limit 
+        !(locationsCount >= locationsLimit)
+      end
+    end
+
     def set_location
       begin  
         @location = Location.find(params[:id])

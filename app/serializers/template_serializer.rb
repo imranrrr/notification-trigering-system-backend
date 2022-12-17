@@ -7,7 +7,7 @@ class TemplateSerializer
 
   attribute :user do |template|
     if template.user.present?
-      {id: template.user.id, email: template.user.email}
+      {id: template.user.id, email: template.user.email, role: template.user.role }
     end
   end
 

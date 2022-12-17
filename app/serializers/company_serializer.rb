@@ -1,6 +1,6 @@
 class CompanySerializer
     include FastJsonapi::ObjectSerializer
-    attributes :id, :name, :sub_domain, :okta_sso_login, :status
+    attributes :id, :name, :sub_domain, :okta_sso_login, :status, :paid
 
     attribute :created_at do |company|
         company.created_at && company.created_at.strftime("%d/%m/%Y")

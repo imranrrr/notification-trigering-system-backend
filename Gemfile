@@ -24,6 +24,8 @@ gem 'fast_jsonapi'
 gem 'byebug'
 gem 'carrierwave', '~> 2.2', '>= 2.2.2'
 gem 'nokogiri', '~> 1.13', '>= 1.13.9'
+gem 'cancancan'
+
 
 gem 'stripe', '~> 8.0'
 gem 'sinatra'

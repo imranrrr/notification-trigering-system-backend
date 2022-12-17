@@ -54,7 +54,7 @@ class Admins::EndpointsController < ApplicationController
           existing_destination.update!(destination_params)
         elsif destination_params.present?
           destination = Destination.new(destination_params)
-          destination.creator_id = current_admin.id; destination.creator_type = 0
+          destination.admin_id = current_admin.id; destination.creator_type = 0
           if destination.save!
             @endpoint.update!(destination_id: destination.id) 
           end

@@ -4,7 +4,11 @@ class Users::ManageUsersController < Users::UsersApiController
 
     def index
         begin
-          @users = User.where(company_id: current_company.id).and(User.where.not(role: "Super User"))
+          if current_user.role == "Super User"
+            @users = User.where(company_id: current_company.id).and(User.where.not(role: "Super User"))
+          elsif current_user.role == "Administrator"
+            @users = User.where(company_id: current_company.id, role: "Notification User")
+          end
           render json:{
             status: 200,
             users: UserSerializer.new(@users).serializable_hash[:data].map{|data| data[:attributes]}
@@ -26,18 +30,22 @@ class Users::ManageUsersController < Users::UsersApiController
     end
 
     def create
-        @user = User.new(user_params)
-        @user.company_id = current_company.id
-        begin
-          if @user.save!
-            render json: {
-              status: 200,
-              user: UserSerializer.new(@user).serializable_hash[:data][:attributes]
-            }
-          end
-        rescue => e
-          render json: {status: 500, message: e.message}
+      begin
+        if check_subscription_limit?
+          @user = User.new(user_params)
+          @user.company_id = current_company.id
+            if @user.save!
+              render json: {
+                status: 200,
+                user: UserSerializer.new(@user).serializable_hash[:data][:attributes]
+              }
+            end
+        else
+          render json: {status: 500, message: "You have Reached Your Subscribed Users Limit!"}
         end
+      rescue => e
+        render json: {status: 500, message: e.message}
+      end
     end
 
     def update
@@ -66,6 +74,14 @@ class Users::ManageUsersController < Users::UsersApiController
     end
 
     private
+
+    def check_subscription_limit?
+      if current_company.subscription.present?
+        userCount = current_company.users.count 
+        limitCount = current_company.subscription.package.users_creating_limit
+        !(userCount >= limitCount)
+      end
+    end
 
     def set_user
         @user = User.find_by(id: params[:id])
