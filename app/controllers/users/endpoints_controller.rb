@@ -4,7 +4,9 @@ class Users::EndpointsController < Users::UsersApiController
 
   def index
     begin
-      endpoints = Endpoint.where(creator_type: 0).and(Endpoint.where(company_id: current_company.id, creator_type: 1))
+      default_endpoints = Endpoint.where(creator_type: 0)
+      company_endpoints = Endpoint.where(company_id: current_company.id, creator_type: 1)
+      endpoints = default_endpoints + company_endpoints
       render json: {
         status: 200,
         endpoints: EndpointSerializer.new(endpoints).serializable_hash[:data].map{|data| data[:attributes]}
@@ -28,21 +30,21 @@ class Users::EndpointsController < Users::UsersApiController
   # POST /endpoints
   def create
     begin
-      if !(check_subscription_limit?)
+      if check_subscription_limit?
         @endpoint = Endpoint.new(endpoint_params)
         @endpoint.company_id = current_company.id; @endpoint.creator_id = current_user.id
         if @endpoint.save! && destination_params.present?
           @destination = Destination.new(destination_params)
           @destination.company_id = current_company.id; @destination.creator_id = current_user.id;
         end
-          if  @destination.present? && @destination.save!
+        if  @destination.present? && @destination.save!
               @endpoint.update!(destination_id: @destination.id)
-          end
-          @endpoint.reload
-          render json: {
-              status: 200,
-              endpoint: EndpointSerializer.new(@endpoint).serializable_hash[:data][:attributes]
-              }
+        end
+        @endpoint.reload
+        render json: {
+            status: 200,
+            endpoint: EndpointSerializer.new(@endpoint).serializable_hash[:data][:attributes]
+            }
       else
         render json: {status: 500, message: "You Have Reached Your Subscribed Endpoint Limit!"}
       end
@@ -83,7 +85,6 @@ class Users::EndpointsController < Users::UsersApiController
             endpoint: @endpoint
           }
         @endpoint.destroy!
-      end
     rescue => e
       render json: {status: 500, message: e.message}
     end
@@ -93,7 +94,7 @@ class Users::EndpointsController < Users::UsersApiController
 
   def check_subscription_limit?
     if current_company.subscription.present?
-      endpointsCount = current_company.endpoint
+      endpointsCount = current_company.endpoints.count
       endpointsLimit =  current_company.subscription.package.endpoints_creating_limit
     !(endpointsCount >= endpointsLimit)
     end

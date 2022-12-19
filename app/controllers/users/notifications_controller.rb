@@ -3,7 +3,11 @@ class Users::NotificationsController < Users::UsersApiController
     before_action :authenticate_user!
     def index
         begin
-            notifications = Notification.where(company_id: current_company.id, creator_id: current_user.id)
+            if current_user.role == "Super User"
+                notifications = Notification.where(company_id: current_company.id)
+            elsif current_user.role == "Administrator" || current_user.role == "Notification User"
+                notifications = Notification.where(creator_id: current_user.id, company_id: current_company.id)
+            end
             render json:  {
                 status: 200,
                 notifications: NotificationSerializer.new(notifications).serializable_hash[:data].map{|data| data[:attributes]}
@@ -33,7 +37,7 @@ class Users::NotificationsController < Users::UsersApiController
             end
             render json: {
                 status: 200,
-                message: "Notifications has been created! :)"
+                message: "Notifications has been created!"
             }
         end
     rescue => e

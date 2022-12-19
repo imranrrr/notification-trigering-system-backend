@@ -26,10 +26,11 @@ class Notification < ApplicationRecord
     # end
 
     def send_email
-        if self.creator_id != nil
-          user = User.find_by(id: self.creator_id)
-          if user.present?
-            UserMailer.with(user: user).notification_email.deliver_later
-          end
+      if self.creator_id != nil
+        user = User.find_by(id: self.creator_id)
+        if user.present?
+          UserMailer.with(user: user).notification_email.deliver_later
         end
+      end
+    end
 end

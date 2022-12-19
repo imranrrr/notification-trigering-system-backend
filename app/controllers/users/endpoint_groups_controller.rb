@@ -4,7 +4,9 @@ class Users::EndpointGroupsController < Users::UsersApiController
 
   def index
     begin   
-      endpoint_groups = EndpointGroup.where(company_id: current_company.id, creator_type: 1).and(EndpointGroup.where(creator_type: 0))
+      company_endpoint_groups = EndpointGroup.where(company_id: current_company.id, creator_type: 1)
+      default_endpoint_groups = EndpointGroup.where(creator_type: 0)
+      endpoint_groups = default_endpoint_groups + company_endpoint_groups
       render json:{
         status: 200,
         endpoint_groups: EndpointGroupSerializer.new(endpoint_groups).serializable_hash[:data].map{|data| data[:attributes]}
@@ -75,7 +77,7 @@ class Users::EndpointGroupsController < Users::UsersApiController
     def check_subscription_limit?
       if current_company.subscription.present?
         endpointGroupsCount = current_company.endpoint_groups.count
-        endpointGroupsLimit = current_company.subscription.package.endpoint_groups_creating_liumit
+        endpointGroupsLimit = current_company.subscription.package.endpoint_groups_creating_limit
         !(endpointGroupsCount >=endpointGroupsLimit)
       end
     end

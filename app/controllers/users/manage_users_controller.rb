@@ -5,7 +5,9 @@ class Users::ManageUsersController < Users::UsersApiController
     def index
         begin
           if current_user.role == "Super User"
-            @users = User.where(company_id: current_company.id).and(User.where.not(role: "Super User"))
+            company_users_for_super_user = User.where(company_id: current_company.id, role: "Administrator")
+            users_except_super_user = User.where(company_id: current_company.id, role: "Notification User")
+            @users = company_users_for_super_user + users_except_super_user
           elsif current_user.role == "Administrator"
             @users = User.where(company_id: current_company.id, role: "Notification User")
           end

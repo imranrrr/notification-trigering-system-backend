@@ -41,6 +41,7 @@ class Admins::CompaniesController < ApplicationController
   end
 
   def update
+    company_params[:status] = company_params[:status].to_i
     begin
       if @company.update!(company_params)
         render json: {
@@ -84,6 +85,7 @@ class Admins::CompaniesController < ApplicationController
     end
 
     def company_params
-      params.permit(:name, :sub_domain, :okta_sso_login, :logo, :status)
+      params[:status] = params[:status].to_i
+      params.permit(:id, :name, :sub_domain, :okta_sso_login, :logo, :status)
     end
 end

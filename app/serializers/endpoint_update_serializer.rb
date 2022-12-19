@@ -1,6 +1,6 @@
 class EndpointUpdateSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :id, :name, :description, :location_id, :endpoint_group_id, :destination_id, :creator_id
+  attributes :name, :description, :location_id, :endpoint_group_id, :destination_id, :creator_id
 
   attribute :creator_type do |endpoint|
     endpoint.creator_type && endpoint.read_attribute_before_type_cast(:creator_type)

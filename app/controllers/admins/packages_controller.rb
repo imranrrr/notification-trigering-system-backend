@@ -2,8 +2,8 @@ require 'stripe'
 require 'sinatra'
 
 class Admins::PackagesController < ApplicationController
-    before_action :authenticate_user!, only: %i[buy_package]
-    before_action :set_package, only: %i[buy_package]
+  before_action :authenticate_user!, only: %i[buy_package]
+  before_action :set_package, only: %i[buy_package]
    
     def index
         @packages = Package.all
@@ -31,6 +31,7 @@ class Admins::PackagesController < ApplicationController
     end
 
     def buy_package
+      byebug
       begin
         Stripe.api_key = ENV["STRIPE_SECRET_KEY"]
         payment_intent = Stripe::PaymentIntent.create(

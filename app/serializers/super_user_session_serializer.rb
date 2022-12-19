@@ -17,16 +17,16 @@ class SuperUserSessionSerializer
         end
       end
 
-      attribute :locations_count do |user|
-        user.locations && user.locations.all.count
+      attribute :locations_count do |object|
+        object.locations && object.company.locations.all.count
       end
 
-      attribute :endpoints_count do |user|
-        user.endpoints && user.endpoints.all.count
+      attribute :endpoints_count do |object|
+        object.company.endpoints && object.company.endpoints.all.count
       end
 
-      attribute :endpoint_groups_count do |user|
-        user.endpoint_groups && user.endpoint_groups.all.count
+      attribute :endpoint_groups_count do |object|
+        object.company.endpoint_groups && object.company.endpoint_groups.all.count
       end
 
     attribute :subscription do |user|
