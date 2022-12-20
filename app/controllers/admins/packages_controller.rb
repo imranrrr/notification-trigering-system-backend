@@ -44,7 +44,7 @@ class Admins::PackagesController < ApplicationController
         clientSecret = payment_intent['client_secret']
         subscription = current_user.company.subscription if current_user.company.subscription.present?
         if clientSecret && subscription
-              subscription.update!(package_id: @package.id)
+              subscription.update!(package_id: @package.id, status: 1)
         elsif clientSecret
               Subscription.create!(company_id: current_user.company.id, status: 1, package_id: @package.id)
         end
@@ -68,7 +68,7 @@ class Admins::PackagesController < ApplicationController
 
        if stripe_result == 'succeeded'
          subscription = current_user.company.subscription
-         Subscription.set_subscription_duration(subscription)
+         subscription.update!(status: 2)
          current_user.company.update(stripe_account_intent: payment_intent, paid: 1)
        end
    
