@@ -4,7 +4,7 @@ class Admins::NotificationsController < ApplicationController
   
     def index
         begin
-            notifications = Notification.all
+            notifications = Notification.where(admin_id: current_admin.id)
             render json:  {
                 status: 200,
                 notifications: NotificationSerializer.new(notifications).serializable_hash[:data].map{|data| data[:attributes]}

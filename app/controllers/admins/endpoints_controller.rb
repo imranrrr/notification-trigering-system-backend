@@ -4,7 +4,7 @@ class Admins::EndpointsController < ApplicationController
 
   def index
     begin
-      endpoints = Endpoint.all
+      endpoints = Endpoint.where(admin_id: current_admin.id)
       render json: {
         status: 200,
         endpoints: EndpointSerializer.new(endpoints).serializable_hash[:data].map{|data| data[:attributes]}

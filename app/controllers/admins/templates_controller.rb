@@ -5,7 +5,7 @@ class Admins::TemplatesController < ApplicationController
 
   def index
     begin
-      templates = Template.all.order("created_at DESC")
+      templates = Template.where(admin_id: current_admin.id)
       render json: {
           status: 200,
           templates: TemplateSerializer.new(templates).serializable_hash[:data].map{|data| data[:attributes]}

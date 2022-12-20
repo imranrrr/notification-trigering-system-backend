@@ -4,7 +4,7 @@ class Admins::WebSignagesController < ApplicationController
 
   def index
     begin
-      web_signages = WebSignage.all
+      web_signages = WebSignage.where(admin_id: current_admin.id)
       render json: {
         status: 200,
         web_signages: WebSignageSerializer.new(web_signages).serializable_hash[:data].map{|data| data[:attributes]}

@@ -4,7 +4,7 @@ class Admins::LocationsController < ApplicationController
 
   def index
     begin
-      locations = Location.all
+      locations = Location.where(admin_id: current_admin.id)
       render json:{
         status: 200,
         locations: LocationSerializer.new(locations).serializable_hash[:data].map{|data| data[:attributes]}

@@ -5,7 +5,9 @@ class Users::TemplatesController < Users::UsersApiController
 
   def index
     begin
-      templates = Template.where(creator_type: 0).or(Template.where(company_id: current_company.id, creator_type: 1))
+      default_templates = Template.where(creator_type: 0)
+      company_templates = Template.where(company_id: current_company.id, creator_type: 1)
+      templates = default_templates + company_templates
       render json: {
           status: 200,
           templates: TemplateSerializer.new(templates).serializable_hash[:data].map{|data| data[:attributes]}
