@@ -30,6 +30,6 @@ pp Endpoint.create!(name: "Test Endpoint 2", description: "test description for 
 
 pp Template.create!(name: "test template", body: "test body", subject: "test subject", creator_id: User.first.id, background_color: "#000000", font_color: "#fff")
 
-pp Package.create!(name: "Silver", price: 20, duration: 0)
-pp Package.create!(name: "Gold", price: 40, duration: 1)
-pp Package.create!(name: "Premium", price: 60, duration: 2)
+pp Package.create!(name: "Silver", price: 20, duration: 0, locations_creating_limit: 3, endpoint_creating_limit: 3, endpoint_groups_creating_limit: 3, users_creating_limit: 10)
+pp Package.create!(name: "Gold", price: 40, duration: 1, locations_creating_limit: 5, endpoint_creating_limit: 5, endpoint_groups_creating_limit: 5, users_creating_limit: 15)
+pp Package.create!(name: "Premium", price: 60, duration: 2, locations_creating_limit: 10, endpoint_creating_limit: 10, endpoint_groups_creating_limit: 10, users_creating_limit: 20)
