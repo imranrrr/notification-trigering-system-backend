@@ -3,7 +3,7 @@ require 'sinatra'
 
 class Admins::PackagesController < ApplicationController
   before_action :authenticate_user!, only: %i[buy_package]
-  before_action :set_package, only: %i[buy_package update show]
+  before_action :set_package, only: %i[buy_package update show destroy]
    
     def index
         @packages = Package.all
@@ -96,6 +96,21 @@ class Admins::PackagesController < ApplicationController
         }
       rescue => e
         render json: {status: 500, message: e.message}
+      end
+    end
+
+    def destroy
+      begin
+        render json: {
+          status: 200,
+          package: @package
+        }
+        @package.destroy!
+      rescue => e
+        render json: {
+          status: 500,
+          message: e.message
+        }
       end
     end
 
