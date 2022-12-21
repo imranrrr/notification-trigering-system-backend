@@ -10,7 +10,7 @@ class Admins::PackagesController < ApplicationController
         render json: 
         {
           status: 200,
-          packages: @packages
+          packages: PackageSerializer.new(@packages).serializable_hash[:data].map{|data| data[:attributes]}
         }
     end
 
@@ -35,7 +35,7 @@ class Admins::PackagesController < ApplicationController
       begin
         render json: {
           status: 200,
-          package: @package
+          package: ShowPackageSerializer.new(@package).serializable_hash[:data][:attributes]
         }
       rescue => e
         render json: {status: 500, message: e.message}
@@ -93,7 +93,7 @@ class Admins::PackagesController < ApplicationController
         @package.update!(package_params)
         render json: {
           status: 200,
-          package: @package
+          package: PackageSerializer.new(@package).serializable_hash[:data][:attributes]
         }
       rescue => e
         render json: {status: 500, message: e.message}

@@ -24,7 +24,7 @@ Rails.application.routes.draw do
       end
     end
     resources :transactions, only: %i[index show]
-    resources :packages, only: %i[index create] do
+    resources :packages do
       member do
         post :buy_package
       end
