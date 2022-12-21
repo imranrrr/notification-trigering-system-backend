@@ -26,7 +26,6 @@ class Admins::PackagesController < ApplicationController
         rescue => e
           render json: {
             status: 500, message: e.message
-            begin 
           }
         end
     end
