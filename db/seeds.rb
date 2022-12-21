@@ -11,7 +11,7 @@ pp Company.create!(name: "Dev's Company", sub_domain: "blog")
 pp Company.create!(name: "Fred's Company", sub_domain: "spot")
 
 pp Admin.create!(name: "Admin", email: "emranlateef786@gmail.com", password: "Admin@123", password_confirmation: "Admin@123")
-pp User.create!(first_name: "Dummy", last_name: "User", email: "emranlateef786@gmail.com", password: "User@123", password_confirmation: "User@123", company_id: 1, role: 2)
+pp User.create!(first_name: "Dummy", last_name: "User", email: "emranlateef786@gmail.com", password: "User@123", password_confirmation: "User@123", company_id: 1, role: 1)
 
 pp 5.times {|i| WebSignage.create(name: "web signage #{i}", scroller_speed: 5, landscape_title_width: "5px", landscape_title_height: "5px", landscape_title_top: "5px", landscape_title_left: "5px", landscape_description_width: "5px", landscape_description_height: "5px", landscape_description_top: "5px", landscape_description_left: "5px", potrait_title_width: "5px", potrait_title_height: "5px", potrait_title_top: "5px", potrait_title_left: "5px", potrait_description_width: "5px", potrait_description_height: "5px", potrait_description_top: "5px", potrait_description_left: "5px", creator_id: 1)}
 

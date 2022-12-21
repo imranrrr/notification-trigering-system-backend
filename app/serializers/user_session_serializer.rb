@@ -1,4 +1,4 @@
-class AdminUserSessionSerializer
+class UserSessionSerializer
     include FastJsonapi::ObjectSerializer
 
     attributes :id, :email, :first_name, :last_name, :bypass_user, :role, :company_id, :status

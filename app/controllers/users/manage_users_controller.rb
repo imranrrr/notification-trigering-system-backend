@@ -27,7 +27,7 @@ class Users::ManageUsersController < Users::UsersApiController
 
     def create
       begin
-        if check_subscription_limit?
+        if check_subscription_limit? && current_user.role == "Administrator"
           @user = User.new(user_params)
           @user.company_id = current_company.id
             if @user.save!
@@ -46,24 +46,34 @@ class Users::ManageUsersController < Users::UsersApiController
 
     def update
         begin
+          if current_user.role == "Administrator"
             if @user.update!(user_params)
               render json: {
                 status: 200,
                 user: UserSerializer.new(@user).serializable_hash[:data][:attributes]
               }
             end
-          rescue => e
-            render json: {status: 500, message: e.message}
+          else
+            render json: {status: 500, message: "You are not eligible for this action!"}
           end
+        rescue => e
+          render json: {status: 500, message: e.message}
+        end
     end
 
     def destroy
         begin
+          if current_user.role == "Administrator"
             render json: {
               status: 200,
                 user: @user
             }
             @user.destroy!
+          else
+          render json: {
+            status: 500, message: "You are not eligible for this action!"
+          }
+          end
         rescue => e
             render json: {status: 500, message: e.message}
         end
