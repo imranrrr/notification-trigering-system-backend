@@ -4,7 +4,7 @@ class Admins::UsersController < ApplicationController
 
     def index
         begin
-            @users = User.all
+            @users = User.where(role:'Administrator')
             render json:{
               status: 200,
               users: UserSerializer.new(@users).serializable_hash[:data].map{|data| data[:attributes]}

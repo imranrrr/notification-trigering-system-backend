@@ -3,7 +3,7 @@ require 'sinatra'
 
 class Admins::PackagesController < ApplicationController
   before_action :authenticate_user!, only: %i[buy_package]
-  before_action :set_package, only: %i[buy_package]
+  before_action :set_package, only: %i[buy_package update show]
    
     def index
         @packages = Package.all
@@ -26,8 +26,20 @@ class Admins::PackagesController < ApplicationController
         rescue => e
           render json: {
             status: 500, message: e.message
+            begin 
           }
         end
+    end
+
+    def show
+      begin
+        render json: {
+          status: 200,
+          package: @package
+        }
+      rescue => e
+        render json: {status: 500, message: e.message}
+      end
     end
 
     def buy_package
@@ -76,6 +88,18 @@ class Admins::PackagesController < ApplicationController
    
     end
 
+    def update
+      begin
+        @package.update!(package_params)
+        render json: {
+          status: 200,
+          package: @package
+        }
+      rescue => e
+        render json: {status: 500, message: e.message}
+      end
+    end
+
     private 
 
     def set_package
@@ -83,6 +107,6 @@ class Admins::PackagesController < ApplicationController
     end
 
     def package_params
-      params.require(:package).permit(:name, :price, :duration)
+      params.require(:package).permit(:name, :price, :duration, :promotion, :locations_creating_limit, :endpoint_groups_creating_limit, :endpoints_creating_limit, :users_creating_limit)
     end
 end

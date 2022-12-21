@@ -8,10 +8,10 @@ class Users::SessionsController < Devise::SessionsController
   private
 
   def respond_with(resource, _opts = {})
-    unless resource.read_attribute_before_type_cast(:role) == 0
+    unless resource.read_attribute_before_type_cast(:role) == 1
       render json: {
         status: {code: 200, message: 'Logged in sucessfully.'},
-        data: SuperUserSessionSerializer.new(resource).serializable_hash[:data][:attributes]
+        data: AdminUserSessionSerializer.new(resource).serializable_hash[:data][:attributes]
       }, status: :ok
     else
       render json: {

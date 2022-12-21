@@ -19,8 +19,7 @@ class User < ApplicationRecord
 
   enum role: {
     "Notification User": 0,
-    "Administrator": 1,
-    "Super User": 2
+    "Administrator": 1
   }
 
   enum status: {
