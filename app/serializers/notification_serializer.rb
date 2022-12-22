@@ -24,4 +24,10 @@ class NotificationSerializer
     end
   end
 
+  attribute :admin do |notification|
+    if notification.admin.present?
+      {id: notification.admin.id, name: notification.admin.email}
+    end
+  end
+
 end

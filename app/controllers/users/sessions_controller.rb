@@ -8,10 +8,14 @@ class Users::SessionsController < Devise::SessionsController
   private
 
   def respond_with(resource, _opts = {})
+    if resource.status == "active"
       render json: {
         status: {code: 200, message: 'Logged in sucessfully.'},
         data: UserSessionSerializer.new(resource).serializable_hash[:data][:attributes]
       }, status: :ok
+    else
+      render json: {status: 500, message: "Looks like your account isn't active. Please contact to your Administrator!"}
+    end
   end
 
   def respond_to_on_destroy
