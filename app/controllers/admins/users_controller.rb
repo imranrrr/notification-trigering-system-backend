@@ -18,7 +18,7 @@ class Admins::UsersController < ApplicationController
         begin
             render json: {
                 status: 200,
-                user: UpdateUserSerializer.new(@user).serializable_hash[:data][:attributes]
+                user: AdminSideUserUpdateSerializer.new(@user).serializable_hash[:data][:attributes]
                 }
         rescue => e
             render json: {status: 500, message: e.message}
