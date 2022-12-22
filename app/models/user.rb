@@ -8,8 +8,7 @@ class User < ApplicationRecord
   has_many :endpoint_groups, foreign_key: :creator_id
   has_many :destinations, foreign_key: :creator_id
   
-  belongs_to :company, optional: true
-  
+  belongs_to :company
   after_create :send_welcome_email
   
   # Include default devise modules. Others available are:

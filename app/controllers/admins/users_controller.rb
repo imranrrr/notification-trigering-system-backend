@@ -27,6 +27,7 @@ class Admins::UsersController < ApplicationController
 
     def create
         @user = User.new(user_params)
+        @user.role = 1;
         begin
           if @user.save!
             render json: {
