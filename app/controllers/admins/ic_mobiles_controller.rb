@@ -1,52 +1,78 @@
 class Admins::IcMobilesController < ApplicationController
   before_action :set_ic_mobile, only: %i[ show update destroy ]
+  before_action :authenticate_admin!
 
-  # GET /ic_mobiles
   def index
-    @ic_mobiles = IcMobile.all
-
-    render json: @ic_mobiles
+    begin
+      @ic_mobiles = IcMobile.all
+      render json: {
+        status: 200, 
+        ic_mobile: IcMobileSerializer.new(@ic_mobiles).serializable_hash[:data].map{|data| data[:attributes]}
+      }
+      rescue => e
+        render json: {status: 500, message: e.message}
+      end
   end
 
-  # GET /ic_mobiles/1
   def show
-    render json: @ic_mobile
+    begin
+      render json: {
+        status: 200,
+        ic_mobile: IcMobileSerializer.new(@ic_mobile).serializable_hash[:data][:attributes]
+      }
+    rescue => e
+      render json: {
+        status: 500, 
+        message: e.message
+      }
+    end
   end
 
-  # POST /ic_mobiles
   def create
     @ic_mobile = IcMobile.new(ic_mobile_params)
-
-    if @ic_mobile.save
-      render json: @ic_mobile, status: :created, location: @ic_mobile
-    else
-      render json: @ic_mobile.errors, status: :unprocessable_entity
+    begin
+      if @ic_mobile.save!
+        render json: {
+          status: 200,
+          ic_mobile: IcMobileSerializer.new(@ic_mobile).serializable_hash[:data][:attributes]
+        }
+      end
+    rescue => e
+      render json: {status: 500, message: e.message}
     end
   end
 
-  # PATCH/PUT /ic_mobiles/1
   def update
-    if @ic_mobile.update(ic_mobile_params)
-      render json: @ic_mobile
-    else
-      render json: @ic_mobile.errors, status: :unprocessable_entity
+    begin
+      if @ic_mobile.update!(ic_mobile_params)
+        render json: {
+          status: 200, 
+          ic_mobile: IcMobileSerializer.new(@ic_mobile).serializable_hash[:data][:attributes]
+        }
+      end
+    rescue => e
+      render json: {status: 500, message: e.message}
     end
   end
 
-  # DELETE /ic_mobiles/1
   def destroy
-    @ic_mobile.destroy
+    begin
+      render json: {
+        status: 200, 
+        ic_mobile: @ic_mobile
+      } 
+      @ic_mobile.destroy
+    rescue => e
+      render json: {status: 500, message: e.message}
+    end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_ic_mobile
       @ic_mobile = IcMobile.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def ic_mobile_params
       params.require(:ic_mobile).permit(:name)
-      # params.fetch(:ic_mobile, {})
     end
 end
