@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_21_074252) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_23_072006) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -88,6 +88,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_21_074252) do
     t.index ["destination_id"], name: "index_endpoints_on_destination_id"
     t.index ["endpoint_group_id"], name: "index_endpoints_on_endpoint_group_id"
     t.index ["location_id"], name: "index_endpoints_on_location_id"
+  end
+
+  create_table "ic_mobiles", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "integrations", force: :cascade do |t|

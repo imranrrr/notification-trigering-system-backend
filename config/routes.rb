@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     resources :web_signages
     resources :integrations
     resources :users
+    resources :ic_mobiles
     resources :notifications, only: %i[index show create destroy]
     resources :companies do 
       member do 
