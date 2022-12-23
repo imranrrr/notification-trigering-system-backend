@@ -46,6 +46,7 @@ class Admins::IcMobilesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def ic_mobile_params
-      params.fetch(:ic_mobile, {})
+      params.require(:ic_mobile).permit(:name)
+      # params.fetch(:ic_mobile, {})
     end
 end
