@@ -7,7 +7,7 @@ class Admins::IcMobilesController < ApplicationController
       @ic_mobiles = IcMobile.all
       render json: {
         status: 200, 
-        ic_mobile: IcMobileSerializer.new(@ic_mobiles).serializable_hash[:data].map{|data| data[:attributes]}
+        ic_mobiles: IcMobileSerializer.new(@ic_mobiles).serializable_hash[:data].map{|data| data[:attributes]}
       }
       rescue => e
         render json: {status: 500, message: e.message}

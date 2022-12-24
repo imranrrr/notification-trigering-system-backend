@@ -45,7 +45,7 @@ class Admins::RegistrationsController < Devise::RegistrationsController
   end
 
   def configure_account_update_params
-    params.require(:admin).permit(:name, :email, :password, :password_confirmation)
+    params.require(:admin).permit(:name, :password, :password_confirmation)
   end
 
   def sign_up_params

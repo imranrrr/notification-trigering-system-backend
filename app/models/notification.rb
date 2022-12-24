@@ -31,6 +31,11 @@ class Notification < ApplicationRecord
         if user.present?
           UserMailer.with(user: user).notification_email.deliver_later
         end
+      else self.admin_id != nil
+        admin = Admin.find_by(id: self.admin_id)
+        if user.present?
+          AdminMailer.with(user: admin).notification_email.deliver_later
+        end
       end
     end
 end

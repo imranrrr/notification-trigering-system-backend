@@ -10,7 +10,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def update
     begin
       user = current_user
-      user.update!(sign_up_params)
+      user.update!(update_user_params)
       render json: {status: 200, message: "Profile Upated Successfully!", user: UserSerializer.new(user).serializable_hash[:data][:attributes]}
     rescue => e
       render json: {status: 500, message: e.message}
@@ -34,6 +34,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def sign_up_params
     params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation, :company_id)
+  end 
+  
+  def update_user_params
+    params.require(:user).permit(:first_name, :last_name, :password, :password_confirmation, :company_id)
   end
 
 end
