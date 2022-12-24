@@ -41,14 +41,16 @@ class Admins::CompaniesController < ApplicationController
   end
 
   def update
-    company_params[:status] = company_params[:status].to_i
     begin
-      if @company.update!(company_params)
-        render json: {
-          status: 200,
-          company: CompanySerializer.new(@company).serializable_hash[:data][:attributes]
-      }
+      if company_params[:logo].present? && company_params[:logo].to_s.include?("UploadedFile")
+          @company.update!(company_params)
+      else
+          @company.update!(company_params.except(:logo))
       end
+      render json: {
+            status: 200,
+            company: CompanySerializer.new(@company).serializable_hash[:data][:attributes]
+        }
     rescue => e 
       render json: {status: 500, message: e.message}
     end
