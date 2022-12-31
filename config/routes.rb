@@ -1,7 +1,6 @@
+require "constraints/subdomain_constraint"
+
 Rails.application.routes.draw do
-  
-  get '/current_user', to: 'current_user#index'
-  get 'current_user/my_engine'
   
   devise_for :admins, controllers: {
       sessions: 'admins/sessions',
@@ -40,19 +39,25 @@ Rails.application.routes.draw do
     sessions: 'users/sessions',
     registrations: 'users/registrations'
   }
-  namespace :users do 
-    resources :templates
-    resources :notifications, only: %i[index show create destroy]
-    resources :subscriptions
-    resources :transactions, only: %i[index show]
-    resources :manage_users
-    resources :locations
-    resources :destinations
-    resources :endpoint_groups
-    resources :web_signages
-    resources :endpoints
+  constraints(SubdomainConstraints.new) do
+    namespace :users do 
+      resources :templates
+      resources :notifications, only: %i[index show create destroy]
+      resources :subscriptions
+      resources :transactions, only: %i[index show]
+      resources :manage_users
+      resources :locations
+      resources :destinations
+      resources :endpoint_groups
+      resources :web_signages
+      resources :endpoints
+    end
+    root 'users/templates#index', as: :company_root
   end
-  # devise_scope :user do 
-  #   post   'users/sign_up',  to: 'users/registrations#create'
-  # end
+
+  root 'home#index'
+
+  
+
+  
 end

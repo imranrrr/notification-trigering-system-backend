@@ -8,6 +8,11 @@ class Company < ApplicationRecord
     has_many :web_signages, dependent: :destroy
     has_many :templates
 
+    validates :sub_domain, presence: true
+    validates :sub_domain, exclusion: { in: %w(www us ca jp),
+    message: "%{value} is reserved." }
+    validates :sub_domain, uniqueness: true
+
     mount_uploader :logo, CompanyLogoUploader
 
     enum status: {
