@@ -36,9 +36,10 @@ Rails.application.routes.draw do
   end
 
 
-  devise_for :users, only: [:sessions, :registrations],controllers: {
+  devise_for :users, only: [:sessions, :registrations, :omniauth_callbacks],controllers: {
     sessions: 'users/sessions',
-    registrations: 'users/registrations'
+    registrations: 'users/registrations',
+    omniauth_callbacks: 'users/omniauth_callbacks'
   }
   namespace :users do 
     resources :templates

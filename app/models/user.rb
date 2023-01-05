@@ -14,7 +14,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise  :database_authenticatable, :registerable, :validatable,
-          :jwt_authenticatable, jwt_revocation_strategy: self
+          :jwt_authenticatable, :omniauthable, omniauth_providers: [:oktaoauth],jwt_revocation_strategy: self
 
   enum role: {
     "Notification User": 0,
@@ -25,6 +25,14 @@ class User < ApplicationRecord
     inactive: 0,
     active: 1
   }
+
+  def self.from_omniauth(auth)
+    user = User.find_or_create_by(email: auth['info']['email']) do 
+      user.provider = auth['provider']
+      user.uid = auth['uid']
+      user.email = auth['info']['email']
+    end
+  end
 
   def jwt_payload
     super

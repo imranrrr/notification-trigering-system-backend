@@ -25,6 +25,9 @@ gem 'byebug'
 gem 'carrierwave', '~> 2.2', '>= 2.2.2'
 gem 'nokogiri', '~> 1.13', '>= 1.13.9'
 gem 'cancancan'
+gem 'figaro', '~> 1.1', '>= 1.1.1'
+gem 'omniauth-oktaoauth'
+gem 'activerecord-session_store'
 
 
 gem 'stripe', '~> 8.0'
