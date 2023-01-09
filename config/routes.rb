@@ -35,12 +35,12 @@ Rails.application.routes.draw do
     end
   end
 
-
-  devise_for :users, only: [:sessions, :registrations, :omniauth_callbacks],controllers: {
-    sessions: 'users/sessions',
-    registrations: 'users/registrations',
-    omniauth_callbacks: 'users/omniauth_callbacks'
-  }
+  devise_for :users, :controllers => {:omniauth_callbacks => "users/omniauth_callbacks"} 
+  # devise_for :users, only: [:sessions, :registrations, :omniauth_callbacks],controllers: {
+  #   sessions: 'users/sessions',
+  #   registrations: 'users/registrations',
+  #   omniauth_callbacks: 'users/omniauth_callbacks'
+  # }
   namespace :users do 
     resources :templates
     resources :notifications, only: %i[index show create destroy]

@@ -1,6 +1,6 @@
 class Users::TemplatesController < Users::UsersApiController
   before_action :set_template, only: %i[ show update destroy ]
-  before_action :authenticate_user!
+  before_action :user_is_logged_in?
   respond_to :json
 
   def index
