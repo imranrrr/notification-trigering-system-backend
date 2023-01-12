@@ -25,6 +25,8 @@ gem 'byebug'
 gem 'carrierwave', '~> 2.2', '>= 2.2.2'
 gem 'nokogiri', '~> 1.13', '>= 1.13.9'
 gem 'cancancan'
+gem 'omniauth-google-oauth2'
+gem 'devise_token_auth'
 
 
 gem 'stripe', '~> 8.0'

@@ -40,7 +40,9 @@ Rails.application.routes.draw do
     sessions: 'users/sessions',
     registrations: 'users/registrations'
   }
-  namespace :users do 
+  namespace :users do  # add this and overide the omniauth callbacks
+    mount_devise_token_auth_for 'User', at: 'auth'
+    post 'social_auth/callback', to: 'social_auth#authenticate_social_auth_user' # this is the line where we add our routes
     resources :templates
     resources :notifications, only: %i[index show create destroy]
     resources :subscriptions

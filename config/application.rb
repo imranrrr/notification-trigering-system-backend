@@ -27,5 +27,19 @@ module Nts
     config.session_store :cookie_store, key: '_interslice_session'
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use config.session_store, config.session_options
+
+    config.session_store :cookie_store, key: '_interslice_session'
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
+
+    config.middleware.use Rack::Cors do
+      allow do
+        origins '*'
+        resource '*',
+        headers: :any,
+        expose: %w[access-token expired token-type uid client],
+        methods: %i[get post options delete put]
+      end
+    end
   end
 end
